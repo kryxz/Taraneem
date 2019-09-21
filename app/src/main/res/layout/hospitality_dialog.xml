@@ -1,0 +1,52 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@color/colorSilver"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/hospitality_type"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/waterCheck"
+        android:text="@string/water"
+        style="@style/checkBoxStyle" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/knafehCheck"
+        android:text="@string/knafeh"
+        style="@style/checkBoxStyle" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/pepsiCheck"
+        android:text="@string/pepsi"
+        style="@style/checkBoxStyle" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+
+        android:id="@+id/cakeCheck"
+        android:text="@string/cake"
+        style="@style/checkBoxStyle" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmHospitality"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="18sp"
+        android:layout_weight="1"
+        android:text="@string/confirm"
+        android:textStyle="bold"
+        android:background="@color/colorWhite"
+        android:textColor="@color/colorPrimaryDark" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

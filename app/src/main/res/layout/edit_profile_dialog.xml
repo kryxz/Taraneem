@@ -1,0 +1,66 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@color/colorSilver"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editName"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:drawableStart="@drawable/ic_person"
+        style="@style/InputEditTextStyle" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editBod"
+        android:hint="@string/birthDate"
+        android:drawableStart="@drawable/ic_date"
+        android:inputType="datetime"
+        style="@style/InputEditTextStyle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/editEmail"
+        android:hint="@string/email"
+        android:gravity="center_vertical"
+        android:inputType="textEmailAddress"
+        android:drawableEnd="@drawable/ic_email"
+        style="@style/InputEditTextStyle" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editPhone"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        android:drawableStart="@drawable/ic_phone"
+        style="@style/InputEditTextStyle" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:text="@string/confirm"
+            android:textStyle="bold"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textStyle="bold"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

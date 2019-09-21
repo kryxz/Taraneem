@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InfoFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_margin="8dp"
+                android:id="@+id/bookingDone"
+                android:gravity="center_horizontal"
+                android:text="@string/profileTitle"
+                android:layout_height="wrap_content" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:layout_margin="8dp"
+                android:id="@+id/userInfo"
+                android:text="@string/profileData"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:id="@+id/editProfileButton"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="18sp"
+                android:text="@string/editProfile"
+                android:drawablePadding="8dp"
+                android:drawableEnd="@drawable/ic_edit"
+                android:textStyle="bold"
+                android:background="@drawable/button_white"
+                android:textColor="@color/colorBlack" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:id="@+id/logoutButton"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="18sp"
+                android:text="@string/logOut"
+                android:drawablePadding="8dp"
+                android:drawableEnd="@drawable/ic_exit"
+                android:textStyle="bold"
+                android:background="@drawable/button_white"
+                android:textColor="@color/colorBlack" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

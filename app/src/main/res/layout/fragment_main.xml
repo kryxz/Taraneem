@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainFragment">
+
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/cardViewStyle"
+        android:id="@+id/weddingCv"
+        app:cardBackgroundColor="@color/colorSilver"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wedding" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/cardViewTextStyle"
+            android:text="@string/wedding" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/cardViewStyle"
+        android:id="@+id/birthdayCv"
+        app:cardBackgroundColor="@color/colorSilver"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/birthday" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/cardViewTextStyle"
+            android:text="@string/birthday" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/cardViewStyle"
+        android:id="@+id/graduationCv"
+        app:cardBackgroundColor="@color/colorSilver"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/graduation" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/cardViewTextStyle"
+            android:text="@string/graduation" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/cardViewStyle"
+        android:id="@+id/storeCv"
+        app:cardBackgroundColor="@color/colorSilver"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ceremony" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/cardViewTextStyle"
+            android:text="@string/ceremony" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

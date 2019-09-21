@@ -1,0 +1,160 @@
+<resources>
+    <string name="app_name">Taraneem</string>
+
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="birthDate">Date Of Birth</string>
+    <string name="phone">Phone Number</string>
+    <string name="registered">Already registered? <font fgcolor='#2A0F52'>Login</font></string>
+    <string name="name">Name</string>
+    <string name="services">Services</string>
+    <string name="settings">Settings</string>
+    <string name="ceremony">Store Opening Ceremony</string>
+    <string name="graduation">Graduation Party</string>
+    <string name="birthday">Birthday</string>
+    <string name="wedding">Wedding</string>
+    <string name="booking">Booking</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+
+
+    <string name="bookings">Bookings</string>
+
+
+    <string name="wedding_date">Date of Wedding</string>
+    <string name="wedding_time">Time of Wedding</string>
+    <string name="wedding_duration">Duration of Wedding</string>
+
+    <string name="party_date">Date of Party</string>
+    <string name="party_time">Time of Party</string>
+
+    <string name="graduationParty_duration">Duration of Graduation Party</string>
+    <string name="birthdayParty_duration">Duration of Birthday Party</string>
+
+    <string name="storeCeremony_duration">Duration of Ceremony</string>
+    <string name="ceremony_date">Date of Ceremony</string>
+    <string name="ceremony_time">Time of Ceremony</string>
+
+    <string name="choose_hall">Choose Hall</string>
+    <string name="choose_gender">Please select a gender</string>
+    <string name="list_of_invitees">List of Invitees</string>
+    <string name="hospitality_type">Hospitality Type</string>
+    <string name="choose_hospitality">Tap to choose</string>
+    <string name="photography_options">Photography Options</string>
+    <string name="others">Others</string>
+    <string name="tap_to_choose">Tap to choose</string>
+
+    <string name="one_hour">1 Hour</string>
+
+    <string name="number_hour">%01d Hours</string>
+
+    <string name="total_price">Total Price:</string>
+    <string name="submit">Submit</string>
+
+    <string name="timeFormat">%1$02d:%2$02d</string>
+    <string name="invalid_duration">You should change the event time first</string>
+
+    <string name="confirm_logout">Confirm Logout</string>
+    <string name="logOut">Log out</string>
+
+    <string name="confirm_logout_message">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="hallInfo">Hall Info</string>
+    <string name="profile">Profile</string>
+
+    <string name="bookingDone">You have successfully booked a place at <font fgcolor='#2A0F52'>%1$s</font>! </string>
+    <string name="profileTitle">Your information are not shared to anyone</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="editDone">Update Info Successfully</string>
+
+    <string name="water">Water</string>
+    <string name="knafeh">Knafeh</string>
+    <string name="pepsi">Pepsi</string>
+    <string name="cake">Cake</string>
+
+    <string name="infoMessage">
+        Address:
+        \n %1$s
+        \n\n
+        Phone:
+        \n %2$s
+        \n\n
+        Info:
+        \n %3$s
+    </string>
+    <string name="bookingInfoFull">
+        Event:
+        \n %1$s
+        \n\n
+        Date:
+        \n %2$s
+        \nTime:
+        \n %3$s
+        \nDuration:
+        \n %4$s
+        \n\n
+        Photography Options:
+        \n %5$s\n
+        Hospitality Options:
+        \n %6$s\n
+        Others:
+        \n %7$s\n
+    </string>
+
+    <string name="profileData">
+        Your name:
+        \n %1$s\n\n
+        Birth Date:
+        \n %2$s\n\n
+        Phone Number:
+        \n %3$s\n\n
+        Email:
+        \n %4$s\n\n
+    </string>
+    <string name="invalid_time">Invalid time or duration</string>
+
+
+    <string name="bookingInfo">Booking Info</string>
+    <string name="personalInfo">Your Information</string>
+    <string name="edit">Change</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="aboutApp">This app is made by Taraneem team. That\'s all.</string>
+    <string name="about">About</string>
+    <string name="changeLanguage">Change Language</string>
+
+    <string-array name="photographyOptions">
+        <item>Standard</item>
+        <item>Extra</item>
+        <item>Customize</item>
+    </string-array>
+
+    <string-array name="others">
+        <item>Surprise</item>
+        <item>Particular Event</item>
+        <item>Customize</item>
+    </string-array>
+
+    <string-array name="inviteesNumbers">
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+    </string-array>
+
+    <string-array name="daysOfWeek">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+</resources>

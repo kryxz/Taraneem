@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="4dp"
+    tools:context=".BookingFragment">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventDateTv"
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/wedding_date" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/InputEditTextStyle"
+                    android:layout_weight="1"
+                    android:id="@+id/eventDate"
+                    android:background="@drawable/text_view_bg"
+                    android:drawableEnd="@drawable/ic_date_white"
+                    android:hint="@string/tap_to_choose"
+                    android:inputType="datetime"
+                    android:padding="4dp"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorWhite"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventTimeTv"
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/wedding_time" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/bookingTextView"
+                        android:layout_weight="1"
+                        android:id="@+id/startTime"
+                        android:background="@drawable/edit_text_bg"
+                        android:text="@string/one_hour" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/bookingTextView"
+                        android:id="@+id/endTime"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_bg"
+                        android:text="@string/one_hour" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventDurationTv"
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/wedding_duration" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/durationText"
+                    android:text="@string/one_hour"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/text_view_bg"
+                    style="@style/bookingTextView" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/choose_hall" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/hallSpinner"
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:padding="8dp"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/hallInfoBtn"
+                        app:srcCompat="@drawable/ic_info_black"
+                        android:layout_height="match_parent" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/list_of_invitees" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/inviteesSpinner"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/hospitality_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:id="@+id/hospitalityText"
+                    android:textSize="13sp"
+                    android:text="@string/choose_hospitality" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/photography_options" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/photoSpinner"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/bookingTextView"
+                    android:layout_weight="1"
+                    android:text="@string/others" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/otherSpinner"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:gravity="start"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:text="@string/total_price" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/eventConfirmButton"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textSize="18sp"
+                android:text="@string/submit"
+                android:fontFamily="@font/roboto_black"
+                android:background="@drawable/button_colored"
+                android:textColor="@color/colorWhite" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

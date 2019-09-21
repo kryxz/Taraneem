@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "920780927715",
+    "firebase_url": "https://taraneem-36cbb.firebaseio.com",
+    "project_id": "taraneem-36cbb",
+    "storage_bucket": "taraneem-36cbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920780927715:android:02b46215f44cf3f34e0bd6",
+        "android_client_info": {
+          "package_name": "com.taraneem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920780927715-sfls1kfa0aoo85h79g8ravmljcb5sp1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taraneem",
+            "certificate_hash": "02e060911c6087edde8e9dfda7eb16314037c859"
+          }
+        },
+        {
+          "client_id": "920780927715-n9r47uls1hlba634v45pafvedvivneev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgex5IGQq9Mbu9OrTd8rMEiANdd3eBbDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920780927715-n9r47uls1hlba634v45pafvedvivneev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

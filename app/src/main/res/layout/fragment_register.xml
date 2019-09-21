@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/regProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/registerView"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="32dp"
+                app:srcCompat="@drawable/logo" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorBlack"
+                android:layout_height="0.5dp"> </View>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_marginBottom="32dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_black"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="@string/register" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/loginTextView"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_thin"
+                    android:padding="8dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/login" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/maleRadioBtn"
+                    android:text="@string/male"
+                    style="@style/radioButtonStyle" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/femaleRadioBtn"
+                    android:text="@string/female"
+                    style="@style/radioButtonStyle" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerNameEd"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:drawableStart="@drawable/ic_person"
+                style="@style/InputEditTextStyle" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerBirthDateEd"
+                android:hint="@string/birthDate"
+                android:drawableStart="@drawable/ic_date"
+                android:inputType="datetime"
+                style="@style/InputEditTextStyle" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerEmailEd"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/ic_email"
+                style="@style/InputEditTextStyle" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerPhoneEd"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                android:drawableStart="@drawable/ic_phone"
+                style="@style/InputEditTextStyle" />
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerPasswordEd"
+                android:hint="@string/password"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawableEnd="@drawable/ic_visibility_off"
+                android:inputType="textPassword"
+                style="@style/InputEditTextStyle" />
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerPasswordConfirmEd"
+                android:hint="@string/confirm_password"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawableEnd="@drawable/ic_visibility_off"
+                android:inputType="textPassword"
+                style="@style/InputEditTextStyle" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/registerNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textSize="18sp"
+                android:text="@string/register"
+                android:fontFamily="@font/roboto_black"
+                android:background="@drawable/button_colored"
+                android:textColor="@color/colorWhite" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/haveAccount"
+                    android:gravity="center_horizontal"
+                    android:textSize="16sp"
+                    android:padding="8dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_height="wrap_content"
+                    android:text="@string/registered" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</FrameLayout>
+
+
+
+
+
+
+
