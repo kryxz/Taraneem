@@ -1,6 +1,7 @@
 package com.taraneem;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -99,6 +102,11 @@ public class MainFragment extends Fragment {
     private String dateToString(Long milliseconds) {
         // returns date as a string from a time, formatted as: 2019/09/17-hour24;
         return new SimpleDateFormat("yyyy/MM/dd-HH", Locale.US).format(milliseconds);
+    }
+
+    static void hideKeyboard(View view) {
+        ((InputMethodManager) Objects.requireNonNull(view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)))
+                .hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

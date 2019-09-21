@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">ترانيم</string>
+
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="register">التسجيل</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="birthDate">تاريخ الميلاد</string>
+    <string name="phone">رقم الهاتف المحمول</string>
+    <string name="registered">مسجل بالفعل؟  <font fgcolor='#2A0F52'>الدخول</font> </string>
+    <string name="name">الاسم</string>
+    <string name="services">الخدمات</string>
+    <string name="settings">الضبط</string>
+    <string name="ceremony">احتفال مناسبة افتتاح</string>
+    <string name="graduation">احتفال تخرّج</string>
+    <string name="birthday">احتفال عيد ميلاد</string>
+    <string name="wedding">احتفال زواج</string>
+    <string name="booking">الحجز</string>
+    <string name="female">أنثى</string>
+    <string name="male">ذكر</string>
+
+
+    <string name="bookings">الحجوزات</string>
+
+
+    <string name="wedding_date">تاريخ الحفلة</string>
+    <string name="wedding_time">وقت الحفلة</string>
+    <string name="wedding_duration">مدة الحفلة</string>
+
+    <string name="party_date">تاريخ الحفلة</string>
+    <string name="party_time">وقت الحفلة</string>
+
+    <string name="graduationParty_duration">مدة احتفال التخرج</string>
+    <string name="birthdayParty_duration">احتفال احتفال عيد الميلاد</string>
+
+    <string name="storeCeremony_duration">مدّة الاحتفال</string>
+    <string name="ceremony_date">تاريخ الاحتفال</string>
+    <string name="ceremony_time">وقت الاحتفال</string>
+
+    <string name="choose_hall">اختر الصّالة</string>
+    <string name="choose_gender">تأكد من تحديد جنسك</string>
+    <string name="list_of_invitees">عدد المدعوون</string>
+    <string name="hospitality_type">الضيافة</string>
+    <string name="photography_options">خيارات التّصوير</string>
+    <string name="others">أخرى</string>
+    <string name="tap_to_choose">المس لتختار</string>
+
+    <string name="one_hour">ساعة واحدة</string>
+
+    <string name="number_hour">%01d ساعة</string>
+
+    <string name="total_price">السعر الإجمالي:</string>
+    <string name="submit">حفظ</string>
+
+    <string name="timeFormat">%1$02d:%2$02d</string>
+    <string name="invalid_duration">يجب تغيير موعد الحفلة أولًا</string>
+
+    <string name="confirm_logout">تأكيد تسجيل الخروج</string>
+    <string name="logOut">تسجيل الخروج</string>
+
+    <string name="confirm_logout_message">هل أنت متأكد من تسجيل الخروج؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+
+    <string name="hallInfo">معلومات الصّالة</string>
+    <string name="profile">الملف الشخصي</string>
+
+    <string name="bookingDone">لقد حجزت مكانًا في %1$s </string>
+    <string name="profileTitle">معلوماتك لن تشارك مع أي أحد</string>
+    <string name="confirm">تأكيد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="editDone">تم تحديث معلوماتك</string>
+
+    <string name="water">ماء</string>
+    <string name="knafeh">كنافة</string>
+    <string name="pepsi">ببسي</string>
+    <string name="cake">كيك</string>
+    <string name="checkFields">يرجى التأكد من جميع الحقول</string>
+
+    <string name="infoMessage">
+        العنوان:
+        \n %1$s
+        \n\n
+        رقم الهاتف:
+        \n %2$s
+        \n\n
+        معلومات:
+        \n %3$s
+    </string>
+    <string name="bookingInfoFull">
+        المناسبة:
+        \n %1$s
+        \n\n
+        التاريخ:
+        \n %2$s
+        \nTime:
+        \n %3$s
+        \nالمدة:
+        \n %4$s
+        \n\n
+        التصوير:
+        \n %5$s\n
+        الضّيافة:
+        \n %6$s\n
+        أخرى:
+        \n %7$s\n
+    </string>
+
+    <string name="profileData">
+        اسمك:
+        \n %1$s\n\n
+        تاريخ الميلاد:
+        \n %2$s\n\n
+        رقم الهاتف:
+        \n %3$s\n\n
+        البريد الإلكتروني:
+        \n %4$s\n\n
+    </string>
+    <string name="invalid_time">وقت أو مدّة غير صالحة</string>
+    <string name="choose_language">Choose Language\nاختر اللغة</string>
+    <string name="can_change_later">You can change it later\nيمكنك تغييرها لاحقًا</string>
+    <string name="arabic">العربيّة</string>
+    <string name="english">English</string>
+    <string name="noAccount">تعذّر العثور على حسابك</string>
+    <string name="wrongPassword">كلمة مرور خاطئة</string>
+    <string name="done">تم</string>
+    <string name="cannotLoadData">تعذر الحصول على بياناتك</string>
+
+
+    <string name="bookingInfo">معلومات الحجز</string>
+    <string name="personalInfo">معلوماتك</string>
+    <string name="edit">تغيير</string>
+    <string name="editProfile">تعديل معلوماتك</string>
+    <string name="aboutApp">هذا التطبيق من تصميم فريق ترانيم</string>
+    <string name="about">حول</string>
+    <string name="changeLanguage">تغيير اللغة</string>
+
+    <string-array name="photographyOptions">
+        <item>قياسي</item>
+        <item>اكسترا</item>
+        <item>مخصص</item>
+    </string-array>
+
+    <string-array name="others">
+        <item>مفاجأة</item>
+        <item>حدث معيّن</item>
+        <item>مخصص</item>
+    </string-array>
+
+    <string-array name="inviteesNumbers">
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+    </string-array>
+
+    <string-array name="daysOfWeek">
+        <item>الأحد</item>
+        <item>الأثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+    </string-array>
+
+</resources>

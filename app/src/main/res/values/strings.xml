@@ -42,7 +42,6 @@
     <string name="choose_gender">Please select a gender</string>
     <string name="list_of_invitees">List of Invitees</string>
     <string name="hospitality_type">Hospitality Type</string>
-    <string name="choose_hospitality">Tap to choose</string>
     <string name="photography_options">Photography Options</string>
     <string name="others">Others</string>
     <string name="tap_to_choose">Tap to choose</string>
@@ -77,6 +76,7 @@
     <string name="knafeh">Knafeh</string>
     <string name="pepsi">Pepsi</string>
     <string name="cake">Cake</string>
+    <string name="checkFields">Check your input, please</string>
 
     <string name="infoMessage">
         Address:
@@ -118,11 +118,19 @@
         \n %4$s\n\n
     </string>
     <string name="invalid_time">Invalid time or duration</string>
+    <string name="choose_language">Choose Language\nاختر اللغة</string>
+    <string name="can_change_later">You can change it later\nيمكنك تغييرها لاحقًا</string>
+    <string name="arabic">العربيّة</string>
+    <string name="english">English</string>
+    <string name="noAccount">Cannot find your account</string>
+    <string name="wrongPassword">Incorrect Password</string>
 
 
     <string name="bookingInfo">Booking Info</string>
     <string name="personalInfo">Your Information</string>
     <string name="edit">Change</string>
+    <string name="done">Done</string>
+    <string name="cannotLoadData">Cannot get your information</string>
     <string name="editProfile">Edit Profile</string>
     <string name="aboutApp">This app is made by Taraneem team. That\'s all.</string>
     <string name="about">About</string>

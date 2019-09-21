@@ -179,7 +179,7 @@
                     android:layout_weight="1"
                     android:id="@+id/hospitalityText"
                     android:textSize="13sp"
-                    android:text="@string/choose_hospitality" />
+                    android:text="@string/tap_to_choose" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

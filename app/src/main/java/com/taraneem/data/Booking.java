@@ -6,11 +6,7 @@ public class Booking {
     }
 
 
-    public enum PhotoOptions {
-        Default, Standard, Extra, Custom
-    }
-
-    private String id;
+    private String id; //used to identify booking
     private String eventDate;
     private String eventTime;
     private int eventDuration;
@@ -56,10 +52,13 @@ public class Booking {
         return id;
     }
 
+    //price will be calculated according to many factors.
     public void calculatePrice() {
         price = inviteesCount * 2;
     }
 
+
+    //checks if all entered data are valid.
     public boolean allFieldsOK() {
         return !eventDate.isEmpty() && !eventTime.isEmpty() &&
 

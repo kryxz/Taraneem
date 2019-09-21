@@ -23,7 +23,8 @@ import java.util.Objects;
 
 
 public class InfoFragment extends Fragment {
-    private View view;
+    private View view; //instead of using getView(). This makes things better.
+
     private Booking booking;
 
     public InfoFragment() {
@@ -39,9 +40,10 @@ public class InfoFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        this.view = view;
-        booking = TempData.getCurrentBooking();
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        //view is not null here.
+        view = v;
+        booking = TempData.getCurrentBooking(); //get booking data from TempData.
         setFields();
         super.onViewCreated(view, savedInstanceState);
     }
@@ -55,7 +57,7 @@ public class InfoFragment extends Fragment {
         // int hours ==> 1 hours.
         if (booking.getEventDuration() == 1)
             bookingDuration = getString(R.string.one_hour);
-        //This is required so that we can translate the app.
+        //This is required so that it's translatable.
         switch (booking.getBookingType()) {
             case "Wedding":
                 bookingChoice = getString(R.string.wedding);
@@ -71,29 +73,35 @@ public class InfoFragment extends Fragment {
                 break;
         }
 
+        //sets texts
         ((AppCompatTextView) (view.findViewById(R.id.bookingInfo))).setText(getString(R.string.bookingInfoFull,
                 bookingChoice, booking.getEventDate(), booking.getEventTime(), bookingDuration,
                 booking.getPhotoOptions(), booking.getHospitality(), booking.getOthers()));
 
         ((AppCompatTextView) (view.findViewById(R.id.bookingDone))).setText(getString(R.string.bookingDone, booking.getHallName()));
 
+        //get hall data from fire base.
         final HashMap<String, String> hall = new HashMap<>();
         FirebaseDatabase.getInstance().getReference().child("Halls")
                 .child(booking.getHallName()).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //add hall data to hall HashMap.
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                     hall.put(ds.getKey(), Objects.requireNonNull(ds.getValue()).toString());
 
                 view.findViewById(R.id.hallInfo).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //store hall info in a formatted way. Check out infoMessage in strings.xml.
                         String infoMessage = getString(R.string.infoMessage,
                                 hall.get("address"),
                                 hall.get("phone"),
                                 hall.get("info"));
 
+
+                        //show hall info dialog, which is the same as the one in Booking Fragment.
                         BookingFragment.viewInfoDialog(infoMessage, booking.getHallName(), view);
                     }
                 });
@@ -101,7 +109,7 @@ public class InfoFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //required empty...
+                //required empty override.
             }
         });
 

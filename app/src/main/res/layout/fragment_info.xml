@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:textSize="18sp"
-                android:text="@string/submit"
+                android:text="@string/done"
                 android:drawablePadding="8dp"
                 android:drawableEnd="@drawable/ic_check"
                 android:textStyle="bold"

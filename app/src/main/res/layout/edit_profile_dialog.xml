@@ -5,6 +5,17 @@
     android:background="@color/colorSilver"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/editProfile"
+        android:layout_height="wrap_content" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editName"
         android:hint="@string/name"
@@ -48,7 +59,7 @@
             android:text="@string/confirm"
             android:textStyle="bold"
             android:background="@color/colorWhite"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorBlack" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelEdit"
@@ -60,7 +71,7 @@
             android:text="@string/cancel"
             android:textStyle="bold"
             android:background="@color/colorWhite"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorBlack" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

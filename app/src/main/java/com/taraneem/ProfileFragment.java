@@ -55,6 +55,7 @@ public class ProfileFragment extends Fragment {
         if (TempData.getUserData() != null)
             user = TempData.getUserData();
         else {
+            Toast.makeText(view.getContext(), getString(R.string.cannotLoadData), Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigateUp();
             return;
         }

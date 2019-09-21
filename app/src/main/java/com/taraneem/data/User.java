@@ -8,6 +8,8 @@ public class User {
 
     private boolean gender;
 
+    //if Male checkbox in Register fragment is checked, then user is male.
+    // Otherwise, they are a female.
     public String getGender() {
         return gender ? "Male" : "Female";
     }
@@ -23,6 +25,7 @@ public class User {
         this.email = email;
     }
 
+    //empty constructor that can be used to initialize a User object.
     public User() {
     }
 

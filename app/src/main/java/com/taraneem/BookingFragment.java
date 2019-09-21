@@ -71,20 +71,26 @@ public class BookingFragment extends Fragment {
         //view fully created. we can use it now.
         this.view = view;
         thisBooking = new Booking();
-        hallsSpinner();
-        getData();
-        setUpFields();
+        hallsSpinner(); //gets Halls data from Fire base and puts them in the spinner.
+        getData(); //gets data from previous fragment. Determines Wedding/Birthday etc..
+        setUpFields(); //sets some texts. Initializes spinners and their listeners. Adds a listener to other views(Duration text, submit button, etc).
 
         super.onViewCreated(view, savedInstanceState);
     }
 
     private void sendBookingData(DatabaseReference databaseReference) {
-        TempData.setCurrentBooking(thisBooking);
+        //all booking data are correct. Date and time are available. We can now store them in the database.
+
+        TempData.setCurrentBooking(thisBooking); //stores booking object to temp data.
+
+        //random uuid.
         String uuid = thisBooking.getId().substring(0, 5) + UUID.randomUUID().toString().substring(0, 10);
         databaseReference.child(uuid)
                 .setValue(thisBooking).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+
+                //go to booking info fragment.
                 Navigation.findNavController(view).navigate(R.id.bookingToInfo);
             }
         });
@@ -94,8 +100,8 @@ public class BookingFragment extends Fragment {
         if (thisBooking.allFieldsOK()) {
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(thisBooking.getHallName()).child(thisBooking.yearOfDate())
                     .child(thisBooking.monthOfDate()).child(thisBooking.dayOfDate());
-            thisBooking.setId(FirebaseAuth.getInstance().getUid());
 
+            thisBooking.setId(FirebaseAuth.getInstance().getUid());
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -154,7 +160,7 @@ public class BookingFragment extends Fragment {
             });
 
         } else
-            Toast.makeText(view.getContext(), "Not OK", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), getString(R.string.checkFields), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -174,6 +180,7 @@ public class BookingFragment extends Fragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         @SuppressLint("InflateParams")//hides ide warning
+        //layout used in this dialog
         final View layout = getLayoutInflater().inflate(R.layout.hospitality_dialog, null);
 
 
@@ -181,7 +188,7 @@ public class BookingFragment extends Fragment {
         final AlertDialog dialog = builder.create();
         dialog.show();
 
-
+        //declare a few check boxes and a button.
         final AppCompatCheckBox waterCheck = layout.findViewById(R.id.waterCheck);
         final AppCompatCheckBox kCheck = layout.findViewById(R.id.knafehCheck);
         final AppCompatCheckBox pepsiCheck = layout.findViewById(R.id.pepsiCheck);
@@ -191,12 +198,13 @@ public class BookingFragment extends Fragment {
         final StringBuilder hospitality = new StringBuilder();
         final String currentHospitality = thisBooking.getHospitality();
 
-
+        //check if field already contains a specific string. Check box accordingly.
         waterCheck.setChecked(currentHospitality.contains(getString(R.string.water)));
         kCheck.setChecked(currentHospitality.contains(getString(R.string.knafeh)));
         pepsiCheck.setChecked(currentHospitality.contains(getString(R.string.pepsi)));
         cakeCheck.setChecked(currentHospitality.contains(getString(R.string.cake)));
 
+        //confirm button listener
         confirmHospitality.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,10 +230,11 @@ public class BookingFragment extends Fragment {
                 if (hospitality.length() != 0)
                     textView.setText(hospitality.toString());
                 else
-                    textView.setText(getString(R.string.choose_hospitality));
+                    textView.setText(getString(R.string.tap_to_choose));
 
+                //add selected to booking data
                 thisBooking.setHospitality(hospitality.toString());
-                dialog.dismiss();
+                dialog.dismiss(); //hide dialog
             }
         });
     }
@@ -274,9 +283,11 @@ public class BookingFragment extends Fragment {
                         viewInfoDialog(infoMessage, title, view);
                     }
                 });
+                //halls spinner listener.
                 hallSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        //adds selected item to booking data.
                         thisBooking.setHallName(hallsList.get(i));
 
                     }
@@ -301,13 +312,17 @@ public class BookingFragment extends Fragment {
 
     private void setUpFields() {
 
+        //declares spinners
         AppCompatSpinner photoSpinner = view.findViewById(R.id.photoSpinner);
         AppCompatSpinner otherSpinner = view.findViewById(R.id.otherSpinner);
         AppCompatSpinner inviteesSpinner = view.findViewById(R.id.inviteesSpinner);
 
+        //sets spinners items and their listeners.
         setSpinnerAdapter(photoSpinner, R.array.photographyOptions);
         setSpinnerAdapter(otherSpinner, R.array.others);
         setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers);
+
+        //declare hospitality text view. add a listener to it.
         final AppCompatTextView hospitalityText = view.findViewById(R.id.hospitalityText);
 
 
@@ -317,11 +332,12 @@ public class BookingFragment extends Fragment {
         thisBooking.setOthers(getResources().getStringArray(R.array.others)[0]);
         thisBooking.setInviteesCount(Integer.parseInt(getResources().getStringArray(R.array.inviteesNumbers)[0]));
 
-
+        //declare event date editText. adds a onClick listener that shows a DatePick dialog onClick.
         final AppCompatEditText dateEd = view.findViewById(R.id.eventDate);
         //shows dialog to pick date onclick
         showDatePickerDialog(dateEd);
 
+        //declares event duration, start and end time text views.
         final AppCompatTextView durationText = view.findViewById(R.id.durationText);
         final AppCompatTextView startTime = view.findViewById(R.id.startTime);
         final AppCompatTextView endTime = view.findViewById(R.id.endTime);
@@ -331,20 +347,27 @@ public class BookingFragment extends Fragment {
         startTime.setText(getString(R.string.timeFormat, 12, 0));
         endTime.setText(getString(R.string.timeFormat, timeAfter(12, 1), 0));
 
+        //change duration when clicked. shows an error if duration is invalid.
         durationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //gets end time and start time to check if duration is valid.
                 String endTimeStr = endTime.getText().toString();
                 String startTimeStr = startTime.getText().toString();
+
                 int minutes = Integer.parseInt(endTimeStr.substring(endTimeStr.indexOf(":") + 1));
                 int startTimeHours = Integer.parseInt(startTimeStr.substring(0, startTimeStr.indexOf(":")));
                 int currentDuration = Integer.parseInt(durationText.getText().toString().subSequence(0, 1).toString());
                 int currentEndTime;
+
+                //change duration by one. if it's a 3, then make a 1.
                 switch (currentDuration) {
                     case 1:
+                        //check if new duration is ok
                         if (isTimeOK(startTimeHours, 2))
                             currentDuration = 2;
-                        else
+                        else //shows an error message, and makes text red for one second.
                             showErrorMessage(getString(R.string.invalid_duration), durationText);
                         break;
                     case 2:
@@ -363,13 +386,16 @@ public class BookingFragment extends Fragment {
 
             }
         });
+        //sets onClick listener to show a dialog.
         hospitalityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showHospitalityDialog(hospitalityText);
             }
         });
+        //show a dialog when startTime/endTime views are clicked.
         setListenerTimeDialog(startTime, endTime);
+        //checks some fields when clicked and adds data to booking Object.
         submitButton();
     }
 
@@ -385,7 +411,10 @@ public class BookingFragment extends Fragment {
                 thisBooking.setEventTime(startTime.getText().toString());
                 //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
                 thisBooking.setEventDate(Objects.requireNonNull(eventDate.getText()).toString());
+
+                //calculate price according to whatever data the user provided
                 thisBooking.calculatePrice();
+                //checks if alll fields are ok. if not, shows an error message. Also, it checks if time is valid.
                 submitNow();
             }
         });
@@ -394,6 +423,7 @@ public class BookingFragment extends Fragment {
     private void showErrorMessage(String message, final AppCompatTextView textView) {
         //shows an error message and makes text red for one second.
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
         textView.setTextColor(Color.RED);
 
         //schedule reverting text color back to white after one second.
@@ -407,6 +437,8 @@ public class BookingFragment extends Fragment {
 
     }
 
+
+    //returns time after a specific duration. 24H format.
     static private int timeAfter(int start, int afterWhat) {
         if ((start == 23 && afterWhat == 1) || (start == 22 && afterWhat == 2) || (start == 21 && afterWhat == 3))
             return 0;
@@ -414,22 +446,22 @@ public class BookingFragment extends Fragment {
 
     }
 
+    //checks if time of a duration is ok. should be more than or equal 12 PM, and less than 24(0 AM)
     static private boolean isTimeOK(int hours, int eventDuration) {
         return (hours + eventDuration <= 24) && (hours + eventDuration >= 12);
     }
-
 
     private void setListenerTimeDialog(final AppCompatTextView textStart, final AppCompatTextView textEnd) {
         //listens for clicks to event time texts. show timePick dialog when clicked.
         textStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View thisView) {
+            public void onClick(View v) {
                 showTimePickDialog(textStart, textEnd);
             }
         });
         textEnd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View thisView) {
+            public void onClick(View v) {
                 showTimePickDialog(textStart, textEnd);
             }
         });
@@ -439,13 +471,15 @@ public class BookingFragment extends Fragment {
         //takes a spinner and an id to array to set up.
 
         final ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                view.getContext(),
-                array,
+                view.getContext(), //context
+                array, //integer id
                 android.R.layout.simple_spinner_item
         );
         final String[] arrayData = getResources().getStringArray(array);
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -574,7 +608,6 @@ public class BookingFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.invalid_time), Toast.LENGTH_SHORT).show();
                 return;
             }
-
             starTimeText.setText(getString(R.string.timeFormat, i, i1));
 
             endTimeText.setText(getString(R.string.timeFormat, timeAfter(i, eventDuration), i1));

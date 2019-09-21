@@ -12,6 +12,7 @@
         android:layout_margin="4dp"
         android:background="@drawable/item_background"
         android:padding="8dp"
+        android:drawablePadding="16dp"
         android:fontFamily="@font/titillium_regular"
         android:text="@string/app_name"
         android:textColor="@color/colorBlack"

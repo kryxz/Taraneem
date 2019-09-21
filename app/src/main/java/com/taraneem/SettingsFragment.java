@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +115,13 @@ public class SettingsFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull SettingsRV holder, final int position) {
             holder.textView.setText(list.get(position).title);
-            holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, list.get(position).icon, 0);
+            String langCode = activity.getSharedPreferences("userPrefs", 0).getString("langPref", "");
+            //icon position depends on language
+            if (langCode.equals("ar"))
+                holder.textView.setCompoundDrawablesWithIntrinsicBounds(list.get(position).icon, 0, 0, 0);
+            else
+                holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, list.get(position).icon, 0);
+
             holder.layoutView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -137,7 +144,7 @@ public class SettingsFragment extends Fragment {
                             aboutApp(view);
                             break;
                         case Language:
-                            changeLanguage(view);
+                            changeLanguage();
                             break;
 
                     }
@@ -145,8 +152,19 @@ public class SettingsFragment extends Fragment {
             });
         }
 
-        private void changeLanguage(final View view) {
-
+        private void changeLanguage() {
+            String langCode = activity.getSharedPreferences("userPrefs", 0).getString("langPref", "");
+            if (langCode.equals("ar"))
+                langCode = "en";
+            else
+                langCode = "ar";
+            final SharedPreferences.Editor editor = activity.getSharedPreferences("userPrefs", 0).edit();
+            editor.putString("langPref", langCode);
+            editor.apply();
+            TaskStackBuilder.create(activity)
+                    .addNextIntent(new Intent(activity, MainActivity.class))
+                    .startActivities();
+            activity.finish();
         }
 
         static void logoutNow(final Activity activity) {

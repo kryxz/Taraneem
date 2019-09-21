@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
@@ -107,7 +108,9 @@ public class RegisterFragment extends Fragment {
                 auth.createUserWithEmailAndPassword(user.getEmail(),
                         password);
                 String id = UUID.randomUUID().toString().substring(0, 10);
-                view.getContext().getSharedPreferences("userPrefs", 0).edit().putString("userID", id).apply();
+                SharedPreferences.Editor editor = view.getContext().getSharedPreferences("userPrefs", 0).edit();
+                editor.putString("userID", id);
+                editor.apply();
                 ref.child(id)
                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -173,7 +176,6 @@ public class RegisterFragment extends Fragment {
         }
         if (!male.isChecked() && !female.isChecked()) {
             Toast.makeText(view.getContext(), getString(R.string.choose_gender), Toast.LENGTH_SHORT).show();
-            male.requestFocus();
             return null;
         }
         if (password.isEmpty() ||
@@ -205,6 +207,7 @@ public class RegisterFragment extends Fragment {
 
 
     private void loginNow(String email, String password) {
+        MainFragment.hideKeyboard(view);
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -230,6 +233,7 @@ public class RegisterFragment extends Fragment {
     }
 
 
+    //shows a datePick dialog when clicked on the editText. Takes a fragmentManager to display the dialog.
     static void showDatePickerDialog(AppCompatEditText editText, final FragmentManager manager) {
         final RegisterFragment.DatePickerFragment datePickerFragment = new RegisterFragment.DatePickerFragment(
                 //01/01/1930 -1262312624000L
@@ -301,6 +305,7 @@ public class RegisterFragment extends Fragment {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DATE, day);
             String dayString = Objects.requireNonNull(getContext()).getResources().getStringArray(R.array.daysOfWeek)[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+            //Since January is 0. December is 11. So we should increment month by 1.
             String dateString = year + "-" + (month + 1) + "-" + day + " " + dayString;
             theEditText.setText(dateString);
 

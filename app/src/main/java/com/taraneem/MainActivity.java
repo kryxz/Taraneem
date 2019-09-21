@@ -1,6 +1,8 @@
 package com.taraneem;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.taraneem.data.TempData;
 import com.taraneem.data.User;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+        setLanguage();
+
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
         navController = Navigation.findNavController(this, R.id.fragment_host);
@@ -56,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void getUserData() {
         final User user = new User();
-        String userID = getSharedPreferences("userPrefs", MODE_PRIVATE).getString("userID", "");
+        String userID = getSharedPreferences("userPrefs", 0).getString("userID", "");
+        if (userID.isEmpty()) return;
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,9 +81,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                //empty override.
             }
         });
+    }
+
+    void setLanguage() {
+        String langCode = getSharedPreferences("userPrefs", 0).getString("langPref", "");
+        if (langCode.isEmpty()) return;
+        setLocale(langCode, this);
+
+    }
+
+    static void setLocale(String langCode, Activity activity) {
+        Configuration config = activity.getResources().getConfiguration();
+        config.locale = new Locale(langCode);
+        activity.getResources().updateConfiguration(config, activity.getResources().getDisplayMetrics());
     }
 
     @Override
