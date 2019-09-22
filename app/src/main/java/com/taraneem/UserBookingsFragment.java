@@ -15,18 +15,24 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.taraneem.data.Booking;
 import com.taraneem.data.TempData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class UserBookingsFragment extends Fragment {
@@ -76,8 +82,8 @@ public class UserBookingsFragment extends Fragment {
             hallNamesList.add(string.substring(string.indexOf("'") + 1));
         for (String string : map.values())
             datesList.add(string.substring(0, string.indexOf("'")));
-
-        return new BookingsAdapter(datesList, hallNamesList, idsList, getActivity());
+        ContentLoadingProgressBar progressBar = view.findViewById(R.id.infoProgressBar);
+        return new BookingsAdapter(datesList, hallNamesList, idsList, getActivity(), progressBar);
 
     }
 
@@ -87,33 +93,15 @@ public class UserBookingsFragment extends Fragment {
         private List<String> hallNamesList;
         private List<String> idsList;
         private Activity activity;
+        private ContentLoadingProgressBar progressBar;
 
-
-        BookingsAdapter(List<String> datesList, List<String> hallNamesList, List<String> idsList, Activity activity) {
+        BookingsAdapter(List<String> datesList, List<String> hallNamesList, List<String>
+                idsList, Activity activity, ContentLoadingProgressBar progressBar) {
             this.datesList = datesList;
             this.hallNamesList = hallNamesList;
             this.idsList = idsList;
             this.activity = activity;
-        }
-
-        static class BookingsRV extends RecyclerView.ViewHolder {
-            final LinearLayoutCompat layoutView;
-            final AppCompatTextView textView;
-            final AppCompatButton delete;
-
-            BookingsRV(LinearLayoutCompat v) {
-                super(v);
-                layoutView = v;
-                textView = layoutView.findViewById(R.id.itemInfo);
-                delete = layoutView.findViewById(R.id.deleteItemButton);
-            }
-        }
-
-        @NonNull
-        @Override
-        public BookingsRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new BookingsRV((LinearLayoutCompat) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.booking_item, parent, false));
+            this.progressBar = progressBar;
         }
 
         @Override
@@ -126,8 +114,79 @@ public class UserBookingsFragment extends Fragment {
                             idsList.get(position), hallNamesList.get(position)), position);
                 }
             });
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editEvent(InfoFragment.getEventPath(datesList.get(position),
+                            idsList.get(position), hallNamesList.get(position)), position, view);
+                }
+            });
+
         }
 
+        @NonNull
+        @Override
+        public BookingsRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new BookingsRV((LinearLayoutCompat) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.booking_item, parent, false));
+        }
+
+        void editEvent(final DatabaseReference reference, final int position, final View view) {
+            progressBar.setVisibility(View.VISIBLE);
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String eventDate = datesList.get(position);
+                        String hallName = hallNamesList.get(position);
+                        String id = idsList.get(position);
+                        String bookingType = Objects.requireNonNull(dataSnapshot.child("bookingType").getValue()).toString();
+                        String duration = Objects.requireNonNull(dataSnapshot.child("eventDuration").getValue()).toString();
+                        String time = Objects.requireNonNull(dataSnapshot.child("eventTime").getValue()).toString();
+                        String hospitality = Objects.requireNonNull(dataSnapshot.child("hospitality").getValue()).toString();
+                        String photoOptions = Objects.requireNonNull(dataSnapshot.child("photoOptions").getValue()).toString();
+                        String others = Objects.requireNonNull(dataSnapshot.child("others").getValue()).toString();
+                        String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                        String inviteesCount = Objects.requireNonNull(dataSnapshot.child("inviteesCount").getValue()).toString();
+                        Booking thisBooking = new Booking();
+                        thisBooking.setId(id);
+                        thisBooking.setHospitality(hospitality);
+                        thisBooking.setBookingType(bookingType);
+                        thisBooking.setEventDate(eventDate);
+                        thisBooking.setHallName(hallName);
+                        thisBooking.setEventDuration(Integer.parseInt(duration));
+                        thisBooking.setEventTime(time);
+                        thisBooking.setPhotoOptions(photoOptions);
+                        thisBooking.setOthers(others);
+                        thisBooking.setPrice(Integer.parseInt(price));
+                        thisBooking.setInviteesCount(Integer.parseInt(inviteesCount));
+                        TempData.setCurrentBooking(thisBooking);
+                        Navigation.findNavController(view).navigate(R.id.changeBookingInfo);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        static class BookingsRV extends RecyclerView.ViewHolder {
+            final LinearLayoutCompat layoutView;
+            final AppCompatTextView textView;
+            final AppCompatButton delete;
+            final AppCompatButton edit;
+
+            BookingsRV(LinearLayoutCompat v) {
+                super(v);
+                layoutView = v;
+                textView = layoutView.findViewById(R.id.itemInfo);
+                delete = layoutView.findViewById(R.id.deleteItemButton);
+                edit = layoutView.findViewById(R.id.editItemButton);
+            }
+        }
 
         private void deleteEvent(final DatabaseReference reference, final int position) {
             //Dialog buttons listener

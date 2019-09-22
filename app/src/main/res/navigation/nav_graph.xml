@@ -60,5 +60,16 @@
         android:id="@+id/userBookingsFragment"
         android:name="com.taraneem.UserBookingsFragment"
         android:label="@string/bookings"
-        tools:layout="@layout/fragment_user_bookings" />
+        tools:layout="@layout/fragment_user_bookings">
+        <action
+            android:id="@+id/changeBookingInfo"
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
