@@ -59,7 +59,8 @@
     <string name="confirm_logout">تأكيد تسجيل الخروج</string>
     <string name="logOut">تسجيل الخروج</string>
 
-    <string name="confirm_logout_message">هل أنت متأكد من تسجيل الخروج؟</string>
+    <string name="are_sure">هل أنت متأكد من رغبتك في المتابعة؟</string>
+    <string name="cancelBooking">الغاء الحجز</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
 
@@ -76,7 +77,10 @@
     <string name="knafeh">كنافة</string>
     <string name="pepsi">ببسي</string>
     <string name="cake">كيك</string>
+    <string name="noBookingsYet">ليس لديك أي حجوزات بعد</string>
     <string name="checkFields">يرجى التأكد من جميع الحقول</string>
+    <string name="start">تبدأ</string>
+    <string name="end">تنتهي</string>
 
     <string name="infoMessage">
         العنوان:
@@ -117,6 +121,13 @@
         البريد الإلكتروني:
         \n %4$s\n\n
     </string>
+    <string name="bookingItemInfo">
+        موعد المناسبة:
+        \n %1$s
+        \n\n
+        الصالة:
+        \n %2$s
+    </string>
     <string name="invalid_time">وقت أو مدّة غير صالحة</string>
     <string name="choose_language">Choose Language\nاختر اللغة</string>
     <string name="can_change_later">You can change it later\nيمكنك تغييرها لاحقًا</string>
@@ -126,7 +137,10 @@
     <string name="wrongPassword">كلمة مرور خاطئة</string>
     <string name="done">تم</string>
     <string name="cannotLoadData">تعذر الحصول على بياناتك</string>
+    <string name="invalidEmail">بريد الكتروني غير صالح!</string>
 
+    <string name="editBooking">تعديل معلومات الحجز</string>
+    <string name="delete">حذف</string>
 
     <string name="bookingInfo">معلومات الحجز</string>
     <string name="personalInfo">معلوماتك</string>

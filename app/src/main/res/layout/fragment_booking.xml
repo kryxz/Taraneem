@@ -63,19 +63,50 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/bookingTextView"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:id="@+id/startTime"
-                        android:background="@drawable/edit_text_bg"
-                        android:text="@string/one_hour" />
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/bookingTextView"
-                        android:id="@+id/endTime"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="12sp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/start" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/bookingTextView"
+                            android:id="@+id/startTime"
+                            android:background="@drawable/edit_text_bg"
+                            android:text="@string/one_hour" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/edit_text_bg"
-                        android:text="@string/one_hour" />
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="12sp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/end" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/bookingTextView"
+                            android:id="@+id/endTime"
+                            android:background="@drawable/edit_text_bg"
+                            android:text="@string/one_hour" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -126,6 +157,7 @@
                         android:layout_width="match_parent"
                         android:gravity="center_horizontal"
                         android:padding="8dp"
+                        android:textAlignment="center"
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent" />
@@ -199,6 +231,7 @@
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:padding="8dp"
+                    android:textAlignment="center"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
@@ -223,6 +256,7 @@
                     android:gravity="center_horizontal"
                     android:padding="8dp"
                     android:layout_margin="8dp"
+                    android:textAlignment="center"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
 

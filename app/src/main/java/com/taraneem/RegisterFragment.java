@@ -31,6 +31,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -104,22 +105,57 @@ public class RegisterFragment extends Fragment {
                 view.findViewById(R.id.registerView).setVisibility(View.GONE);
 
                 final String password = Objects.requireNonNull(passwordEd.getText()).toString();
-
                 auth.createUserWithEmailAndPassword(user.getEmail(),
-                        password);
-                String id = UUID.randomUUID().toString().substring(0, 10);
-                SharedPreferences.Editor editor = view.getContext().getSharedPreferences("userPrefs", 0).edit();
-                editor.putString("userID", id);
-                editor.apply();
-                ref.child(id)
-                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            loginNow(user.getEmail(), password);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            String id = UUID.randomUUID().toString().substring(0, 10);
+                            user.setId(id);
+                            SharedPreferences.Editor editor = view.getContext().getSharedPreferences("userPrefs", 0).edit();
+                            editor.putString("userID", id);
+                            editor.apply();
+                            sendData(ref, user, password);
+
+                        } else if (Objects.requireNonNull(task.getException()).toString().contains("badly formatted")) {
+                            //user entered an invalid email. tara@t.t is invalid, for example!
+                            progressBar.setVisibility(View.GONE);
+                            view.findViewById(R.id.registerView).setVisibility(View.VISIBLE);
+                            Toast.makeText(view.getContext(), getString(R.string.invalidEmail), Toast.LENGTH_SHORT).show();
+                            ((TextInputEditText) view.findViewById(R.id.registerEmailEd)).setError(getString(R.string.invalidEmail));
+                            registerBtn.setEnabled(true);
+                        }
+
                     }
                 });
 
+
+            }
+        });
+
+    }
+
+    private void sendData(final DatabaseReference ref, final User user, final String password) {
+        MainFragment.hideKeyboard(view);
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(user.getEmail(),
+                password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    assert FirebaseAuth.getInstance().getCurrentUser() != null;
+                    String id = FirebaseAuth.getInstance().getCurrentUser().getUid().substring(0, 10);
+                    user.setId(id);
+                    ref.child(id)
+                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                                TaskStackBuilder.create(getContext())
+                                        .addNextIntent(new Intent(getActivity(), MainActivity.class))
+                                        .startActivities();
+                        }
+                    });
+                }
             }
         });
 
@@ -203,21 +239,6 @@ public class RegisterFragment extends Fragment {
         user.setGender(male.isChecked());
 
         return user;
-    }
-
-
-    private void loginNow(String email, String password) {
-        MainFragment.hideKeyboard(view);
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful())
-                    TaskStackBuilder.create(getContext())
-                            .addNextIntent(new Intent(getActivity(), MainActivity.class))
-                            .startActivities();
-
-            }
-        });
     }
 
 

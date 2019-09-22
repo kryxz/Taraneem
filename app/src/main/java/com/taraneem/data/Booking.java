@@ -1,6 +1,7 @@
 package com.taraneem.data;
 
 public class Booking {
+
     public enum BookingType {
         Default, Wedding, Birthday, Graduation, Store
     }

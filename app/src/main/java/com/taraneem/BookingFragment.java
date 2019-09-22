@@ -52,6 +52,8 @@ public class BookingFragment extends Fragment {
     private View view;
 
     private Booking thisBooking;
+    private Fragment fragment = this;
+
 
     public BookingFragment() {
         // Required empty public constructor
@@ -84,12 +86,13 @@ public class BookingFragment extends Fragment {
         TempData.setCurrentBooking(thisBooking); //stores booking object to temp data.
 
         //random uuid.
-        String uuid = thisBooking.getId().substring(0, 5) + UUID.randomUUID().toString().substring(0, 10);
+        String uuid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().substring(0, 5)
+                + UUID.randomUUID().toString().substring(0, 5);
+        thisBooking.setId(uuid);
         databaseReference.child(uuid)
                 .setValue(thisBooking).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
                 //go to booking info fragment.
                 Navigation.findNavController(view).navigate(R.id.bookingToInfo);
             }
@@ -101,7 +104,6 @@ public class BookingFragment extends Fragment {
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(thisBooking.getHallName()).child(thisBooking.yearOfDate())
                     .child(thisBooking.monthOfDate()).child(thisBooking.dayOfDate());
 
-            thisBooking.setId(FirebaseAuth.getInstance().getUid());
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -176,12 +178,12 @@ public class BookingFragment extends Fragment {
         return map;
     }
 
-    private void showHospitalityDialog(final AppCompatTextView textView) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    static void showHospitalityDialog(final Booking theBooking, final AppCompatTextView textView, Fragment fragment, View view) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         @SuppressLint("InflateParams")//hides ide warning
         //layout used in this dialog
-        final View layout = getLayoutInflater().inflate(R.layout.hospitality_dialog, null);
+        final View layout = fragment.getLayoutInflater().inflate(R.layout.hospitality_dialog, null);
 
 
         builder.setView(layout);
@@ -196,44 +198,44 @@ public class BookingFragment extends Fragment {
         final AppCompatButton confirmHospitality = layout.findViewById(R.id.confirmHospitality);
 
         final StringBuilder hospitality = new StringBuilder();
-        final String currentHospitality = thisBooking.getHospitality();
+        final String currentHospitality = theBooking.getHospitality();
 
         //check if field already contains a specific string. Check box accordingly.
-        waterCheck.setChecked(currentHospitality.contains(getString(R.string.water)));
-        kCheck.setChecked(currentHospitality.contains(getString(R.string.knafeh)));
-        pepsiCheck.setChecked(currentHospitality.contains(getString(R.string.pepsi)));
-        cakeCheck.setChecked(currentHospitality.contains(getString(R.string.cake)));
+        waterCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.water)));
+        kCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.knafeh)));
+        pepsiCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.pepsi)));
+        cakeCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.cake)));
 
         //confirm button listener
         confirmHospitality.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (waterCheck.isChecked())
-                    hospitality.append(getString(R.string.water));
+                    hospitality.append(view.getContext().getString(R.string.water));
 
                 if (kCheck.isChecked())
                     if (hospitality.length() == 0)
-                        hospitality.append(getString(R.string.knafeh));
+                        hospitality.append(view.getContext().getString(R.string.knafeh));
                     else
-                        hospitality.append(", ").append(getString(R.string.knafeh));
+                        hospitality.append(", ").append(view.getContext().getString(R.string.knafeh));
                 if (pepsiCheck.isChecked())
                     if (hospitality.length() == 0)
-                        hospitality.append(getString(R.string.pepsi));
+                        hospitality.append(view.getContext().getString(R.string.pepsi));
                     else
-                        hospitality.append(", ").append(getString(R.string.pepsi));
+                        hospitality.append(", ").append(view.getContext().getString(R.string.pepsi));
 
                 if (cakeCheck.isChecked())
                     if (hospitality.length() == 0)
-                        hospitality.append(getString(R.string.cake));
+                        hospitality.append(view.getContext().getString(R.string.cake));
                     else
-                        hospitality.append(", ").append(getString(R.string.cake));
+                        hospitality.append(", ").append(view.getContext().getString(R.string.cake));
                 if (hospitality.length() != 0)
                     textView.setText(hospitality.toString());
                 else
-                    textView.setText(getString(R.string.tap_to_choose));
+                    textView.setText(view.getContext().getString(R.string.tap_to_choose));
 
                 //add selected to booking data
-                thisBooking.setHospitality(hospitality.toString());
+                theBooking.setHospitality(hospitality.toString());
                 dialog.dismiss(); //hide dialog
             }
         });
@@ -318,9 +320,9 @@ public class BookingFragment extends Fragment {
         AppCompatSpinner inviteesSpinner = view.findViewById(R.id.inviteesSpinner);
 
         //sets spinners items and their listeners.
-        setSpinnerAdapter(photoSpinner, R.array.photographyOptions);
-        setSpinnerAdapter(otherSpinner, R.array.others);
-        setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers);
+        setSpinnerAdapter(photoSpinner, R.array.photographyOptions, thisBooking, view);
+        setSpinnerAdapter(otherSpinner, R.array.others, thisBooking, view);
+        setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers, thisBooking, view);
 
         //declare hospitality text view. add a listener to it.
         final AppCompatTextView hospitalityText = view.findViewById(R.id.hospitalityText);
@@ -390,7 +392,7 @@ public class BookingFragment extends Fragment {
         hospitalityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHospitalityDialog(hospitalityText);
+                showHospitalityDialog(thisBooking, hospitalityText, fragment, view);
             }
         });
         //show a dialog when startTime/endTime views are clicked.
@@ -467,7 +469,7 @@ public class BookingFragment extends Fragment {
         });
     }
 
-    private void setSpinnerAdapter(final AppCompatSpinner spinner, final int array) {
+    static void setSpinnerAdapter(final AppCompatSpinner spinner, final int array, final Booking theBooking, View view) {
         //takes a spinner and an id to array to set up.
 
         final ArrayAdapter adapter = ArrayAdapter.createFromResource(
@@ -475,7 +477,7 @@ public class BookingFragment extends Fragment {
                 array, //integer id
                 android.R.layout.simple_spinner_item
         );
-        final String[] arrayData = getResources().getStringArray(array);
+        final String[] arrayData = view.getContext().getResources().getStringArray(array);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -484,14 +486,17 @@ public class BookingFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 switch (spinner.getId()) {
+                    case R.id.editPhotoSpinner:
                     case R.id.photoSpinner:
-                        thisBooking.setPhotoOptions(arrayData[pos]);
+                        theBooking.setPhotoOptions(arrayData[pos]);
                         break;
+                    case R.id.editOtherSpinner:
                     case R.id.otherSpinner:
-                        thisBooking.setOthers(arrayData[pos]);
+                        theBooking.setOthers(arrayData[pos]);
                         break;
+                    case R.id.editInviteesSpinner:
                     case R.id.inviteesSpinner:
-                        thisBooking.setInviteesCount(Integer.parseInt(arrayData[pos]));
+                        theBooking.setInviteesCount(Integer.parseInt(arrayData[pos]));
                         break;
                 }
             }

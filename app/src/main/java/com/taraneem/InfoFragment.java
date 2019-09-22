@@ -1,22 +1,33 @@
 package com.taraneem;
 
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.taraneem.data.Booking;
 import com.taraneem.data.TempData;
+import com.taraneem.data.User;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -26,6 +37,7 @@ public class InfoFragment extends Fragment {
     private View view; //instead of using getView(). This makes things better.
 
     private Booking booking;
+    private Fragment fragment = this;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -112,6 +124,92 @@ public class InfoFragment extends Fragment {
                 //required empty override.
             }
         });
+        view.findViewById(R.id.doneButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                updateBookingData(v);
+            }
+        });
+        view.findViewById(R.id.editButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditDialog();
+            }
+        });
 
     }
+
+    private String removeWeekDays(String string) {
+        return string.substring(0, string.lastIndexOf('-') + 3);
+    }
+
+    private void updateBookingData(final View v) {
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().substring(0, 10);
+        User user = TempData.getUserData();
+        HashMap<String, String> bookings = new HashMap<>();
+        if (user.getBookings() != null)
+            bookings = user.getBookings();
+
+        bookings.put(booking.getId(), removeWeekDays(booking.getEventDate()) + "'" + booking.getHallName());
+        user.setBookings(bookings);
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    DatabaseReference eventRef = getEventPath(booking.getEventDate(), booking.getId(), booking.getHallName());
+                    eventRef.setValue(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Navigation.findNavController(v).navigate(R.id.infoToMain);
+                            Toast.makeText(view.getContext(), getString(R.string.bookingDone, booking.getHallName()), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    static DatabaseReference getEventPath(String date, String id, String hallName) {
+        String year = date.substring(0, 4);
+        String month = date.substring(date.indexOf('-') + 1, date.lastIndexOf('-'));
+        String day = date.substring(date.lastIndexOf('-') + 1, date.lastIndexOf('-') + 3).replace(" ", "");
+        return FirebaseDatabase.getInstance().getReference().child(hallName)
+                .child(year).child(month).child(day).child(id);
+    }
+
+    private void showEditDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        @SuppressLint("InflateParams")//hides ide warning
+        final View layout = getLayoutInflater().inflate(R.layout.edit_booking_dialog, null);
+
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        AppCompatSpinner photoSpinner = layout.findViewById(R.id.editPhotoSpinner);
+        AppCompatSpinner otherSpinner = layout.findViewById(R.id.editOtherSpinner);
+        AppCompatSpinner inviteesSpinner = layout.findViewById(R.id.editInviteesSpinner);
+        final AppCompatTextView editHospitalityText = layout.findViewById(R.id.editHospitalityText);
+
+        editHospitalityText.setText(booking.getHospitality());
+        BookingFragment.setSpinnerAdapter(photoSpinner, R.array.photographyOptions, booking, view);
+        BookingFragment.setSpinnerAdapter(otherSpinner, R.array.others, booking, view);
+        BookingFragment.setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers, booking, view);
+        editHospitalityText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BookingFragment.showHospitalityDialog(booking, editHospitalityText, fragment, view);
+            }
+        });
+        layout.findViewById(R.id.confirmBookingEdit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 }

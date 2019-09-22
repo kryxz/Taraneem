@@ -1,12 +1,24 @@
 package com.taraneem.data;
 
+import java.util.HashMap;
+
 public class User {
     private String name;
     private String dob;
     private String phoneNo;
     private String email;
-
+    private String id;
     private boolean gender;
+
+    private HashMap<String, String> bookings;
+
+    public void setBookings(HashMap<String, String> bookings) {
+        this.bookings = bookings;
+    }
+
+    public HashMap<String, String> getBookings() {
+        return bookings;
+    }
 
     //if Male checkbox in Register fragment is checked, then user is male.
     // Otherwise, they are a female.
@@ -32,6 +44,14 @@ public class User {
     //Firebase requires to have public variables or getter/setter.
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {

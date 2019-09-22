@@ -45,8 +45,12 @@
     <string name="photography_options">Photography Options</string>
     <string name="others">Others</string>
     <string name="tap_to_choose">Tap to choose</string>
+    <string name="delete">Delete</string>
 
     <string name="one_hour">1 Hour</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="invalidEmail">Invalid Email Address</string>
 
     <string name="number_hour">%01d Hours</string>
 
@@ -59,7 +63,8 @@
     <string name="confirm_logout">Confirm Logout</string>
     <string name="logOut">Log out</string>
 
-    <string name="confirm_logout_message">Are you sure you want to log out?</string>
+    <string name="are_sure">Are you sure you want to continue?</string>
+    <string name="cancelBooking">Cancel Booking</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -76,7 +81,16 @@
     <string name="knafeh">Knafeh</string>
     <string name="pepsi">Pepsi</string>
     <string name="cake">Cake</string>
+    <string name="noBookingsYet">No Bookings Found!</string>
     <string name="checkFields">Check your input, please</string>
+
+    <string name="bookingItemInfo">
+        Event Date:
+        \n %1$s
+        \n\n
+        Hall:
+        \n %2$s
+    </string>
 
     <string name="infoMessage">
         Address:
@@ -124,6 +138,7 @@
     <string name="english">English</string>
     <string name="noAccount">Cannot find your account</string>
     <string name="wrongPassword">Incorrect Password</string>
+    <string name="editBooking">Edit Booking</string>
 
 
     <string name="bookingInfo">Booking Info</string>
@@ -135,6 +150,7 @@
     <string name="aboutApp">This app is made by Taraneem team. That\'s all.</string>
     <string name="about">About</string>
     <string name="changeLanguage">Change Language</string>
+
 
     <string-array name="photographyOptions">
         <item>Standard</item>
@@ -155,6 +171,7 @@
         <item>500</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="daysOfWeek">
         <item>Sunday</item>
         <item>Monday</item>

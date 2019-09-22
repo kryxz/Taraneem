@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.taraneem.data.TempData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +196,7 @@ public class SettingsFragment extends Fragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(activity.getString(R.string.confirm_logout)).setMessage(
-                    activity.getString(R.string.confirm_logout_message)).setPositiveButton(activity.getString(R.string.yes), dialogClickListener)
+                    activity.getString(R.string.are_sure)).setPositiveButton(activity.getString(R.string.yes), dialogClickListener)
                     .setNegativeButton(activity.getString(R.string.no), dialogClickListener);
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -206,12 +208,15 @@ public class SettingsFragment extends Fragment {
             return activity.getString(id);
         }
 
-        //TODO implement settings.
 
-        //goto Bookings fragment.
+        //goto Bookings fragment if user has made any bookings.
         void viewBookings(View view) {
-            Navigation.findNavController(view).navigate(R.id.profileFragment);
-
+            if (TempData.getUserData() == null)
+                Toast.makeText(view.getContext(), getString(R.string.cannotLoadData), Toast.LENGTH_SHORT).show();
+            else if (TempData.getUserData().getBookings().isEmpty())
+                Toast.makeText(view.getContext(), getString(R.string.noBookingsYet), Toast.LENGTH_SHORT).show();
+            else
+                Navigation.findNavController(view).navigate(R.id.userBookingsFragment);
         }
 
         //Goto Profile fragment.

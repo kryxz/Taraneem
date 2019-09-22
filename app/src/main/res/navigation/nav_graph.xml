@@ -46,5 +46,19 @@
         android:id="@+id/infoFragment"
         android:name="com.taraneem.InfoFragment"
         android:label="@string/bookingInfo"
-        tools:layout="@layout/fragment_info" />
+        tools:layout="@layout/fragment_info" >
+        <action
+            android:id="@+id/infoToMain"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userBookingsFragment"
+        android:name="com.taraneem.UserBookingsFragment"
+        android:label="@string/bookings"
+        tools:layout="@layout/fragment_user_bookings" />
 </navigation>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/editBooking"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bookingTextView"
+            android:layout_weight="1"
+            android:text="@string/list_of_invitees" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/editInviteesSpinner"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bookingTextView"
+            android:layout_weight="1"
+            android:text="@string/hospitality_type" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bookingTextView"
+            android:layout_weight="1"
+            android:id="@+id/editHospitalityText"
+            android:textSize="13sp"
+            android:text="@string/tap_to_choose" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bookingTextView"
+            android:layout_weight="1"
+            android:text="@string/photography_options" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/editPhotoSpinner"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bookingTextView"
+            android:layout_weight="1"
+            android:text="@string/others" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/editOtherSpinner"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmBookingEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="18sp"
+        android:text="@string/confirm"
+        android:textStyle="bold"
+        android:background="@color/colorWhite"
+        android:textColor="@color/colorBlack" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:layout_margin="8dp"
+            android:id="@+id/itemInfo"
+            android:text="@string/bookingItemInfo"
+            android:layout_height="wrap_content" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:id="@+id/deleteItemButton"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textSize="18sp"
+            android:text="@string/delete"
+            android:drawablePadding="8dp"
+            android:textStyle="bold"
+            android:background="@drawable/button_colored"
+            android:textColor="@color/colorWhite" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
