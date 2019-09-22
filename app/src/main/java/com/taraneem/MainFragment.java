@@ -3,7 +3,6 @@ package com.taraneem;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.taraneem.data.Booking;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -61,9 +59,14 @@ public class MainFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.notificationBtn)
-            Log.i("notification", dateToString(new Date().getTime()));
+        if (item.getItemId() == R.id.infoBtn)
+            showInfoDialog();
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoDialog() {
+        String message = getString(R.string.mainInfoMessage), title = getString(R.string.mainInfoTitle);
+        BookingFragment.viewInfoDialog(message, title, view);
     }
 
     private void cardViewListener() {

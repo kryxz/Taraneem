@@ -40,6 +40,7 @@ import com.taraneem.data.Booking;
 import com.taraneem.data.TempData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
@@ -481,6 +482,18 @@ public class BookingFragment extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        if (spinner.getId() == R.id.editPhotoSpinner || spinner.getId() == R.id.photoSpinner)
+            spinner.setSelection(Arrays.asList(view.getContext().getResources()
+                    .getStringArray(array)).indexOf(theBooking.getPhotoOptions()));
+
+        if (spinner.getId() == R.id.editOtherSpinner || spinner.getId() == R.id.otherSpinner)
+            spinner.setSelection(Arrays.asList(view.getContext().getResources()
+                    .getStringArray(array)).indexOf(theBooking.getOthers()));
+
+        if (spinner.getId() == R.id.editInviteesSpinner || spinner.getId() == R.id.inviteesSpinner)
+            spinner.setSelection(Arrays.asList(view.getContext().getResources()
+                    .getStringArray(array)).indexOf(String.valueOf(theBooking.getInviteesCount())));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +31,40 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
+    static void getUserData(Activity activity) {
+        final User user = new User();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
+
+        String userID = activity.getSharedPreferences("userPrefs", 0).getString("userID", "");
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String dob = Objects.requireNonNull(dataSnapshot.child("dob").getValue()).toString();
+                String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
+                String name = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
+                String phoneNo = Objects.requireNonNull(dataSnapshot.child("phoneNo").getValue()).toString();
+
+                HashMap<String, String> bookings = new HashMap<>();
+                for (DataSnapshot ds : dataSnapshot.child("bookings").getChildren())
+                    bookings.put(ds.getKey(), Objects.requireNonNull(ds.getValue()).toString());
+
+                user.setDob(dob);
+                user.setEmail(email);
+                user.setName(name);
+                user.setPhoneNo(phoneNo);
+                user.setId(dataSnapshot.getKey());
+                user.setBookings(bookings);
+
+                TempData.setUserData(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //empty override.
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,49 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(set).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        getUserData();
-    }
-
-    static void getUserData() {
-        final User user = new User();
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid().substring(0, 10);
-        FirebaseDatabase.getInstance().getReference().child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String dob = Objects.requireNonNull(dataSnapshot.child("dob").getValue()).toString();
-                String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
-                String name = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
-                String phoneNo = Objects.requireNonNull(dataSnapshot.child("phoneNo").getValue()).toString();
-
-                HashMap<String, String> bookings = new HashMap<>();
-                for (DataSnapshot ds : dataSnapshot.child("bookings").getChildren())
-                    bookings.put(ds.getKey(), Objects.requireNonNull(ds.getValue()).toString());
-
-                user.setDob(dob);
-                user.setEmail(email);
-                user.setName(name);
-                user.setPhoneNo(phoneNo);
-                user.setId(dataSnapshot.getKey());
-                user.setBookings(bookings);
-                Log.i("Dataaaaa", bookings.values().toString());
-                Log.i("Dataaaaa", bookings.keySet().toString());
-
-                for (String value : bookings.values())
-                    Log.i("Dataaaaa", value);
-
-                for (String key : bookings.keySet())
-                    Log.i("Dataaaaa", key);
-
-                TempData.setUserData(user);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //empty override.
-            }
-        });
+        getUserData(this);
     }
 
     void setLanguage() {

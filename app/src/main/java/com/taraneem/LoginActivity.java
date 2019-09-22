@@ -17,7 +17,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
 
-        //setLanguage
     }
 
     void setLanguage() {

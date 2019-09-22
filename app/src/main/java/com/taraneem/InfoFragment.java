@@ -19,7 +19,6 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -88,7 +87,8 @@ public class InfoFragment extends Fragment {
         //sets texts
         ((AppCompatTextView) (view.findViewById(R.id.bookingInfo))).setText(getString(R.string.bookingInfoFull,
                 bookingChoice, booking.getEventDate(), booking.getEventTime(), bookingDuration,
-                booking.getPhotoOptions(), booking.getHospitality(), booking.getOthers()));
+                booking.getPhotoOptions(), booking.getHospitality(),
+                booking.getOthers(), String.valueOf(booking.getInviteesCount()), String.valueOf(booking.getPrice())));
 
         ((AppCompatTextView) (view.findViewById(R.id.bookingDone))).setText(getString(R.string.bookingDone, booking.getHallName()));
 
@@ -111,7 +111,6 @@ public class InfoFragment extends Fragment {
                                 hall.get("address"),
                                 hall.get("phone"),
                                 hall.get("info"));
-
 
                         //show hall info dialog, which is the same as the one in Booking Fragment.
                         BookingFragment.viewInfoDialog(infoMessage, booking.getHallName(), view);
@@ -144,7 +143,7 @@ public class InfoFragment extends Fragment {
     }
 
     private void updateBookingData(final View v) {
-        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().substring(0, 10);
+        String userID = Objects.requireNonNull(getContext()).getSharedPreferences("userPrefs", 0).getString("userID", "");
         User user = TempData.getUserData();
         HashMap<String, String> bookings = new HashMap<>();
         if (user.getBookings() != null)

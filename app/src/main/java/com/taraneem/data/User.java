@@ -3,11 +3,7 @@ package com.taraneem.data;
 import java.util.HashMap;
 
 public class User {
-    private String name;
-    private String dob;
-    private String phoneNo;
-    private String email;
-    private String id;
+    private String name, dob, id, phoneNo, email;
     private boolean gender;
 
     private HashMap<String, String> bookings;
@@ -30,18 +26,12 @@ public class User {
         this.gender = gender;
     }
 
-    public User(String name, String dob, String phoneNo, String email) {
-        this.name = name;
-        this.dob = dob;
-        this.phoneNo = phoneNo;
-        this.email = email;
-    }
 
     //empty constructor that can be used to initialize a User object.
     public User() {
     }
 
-    //Firebase requires to have public variables or getter/setter.
+    //FireBase requires to have public variables or getter/setter.
     public String getName() {
         return name;
     }

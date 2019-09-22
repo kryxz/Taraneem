@@ -40,7 +40,7 @@
 
     <string name="choose_hall">اختر الصّالة</string>
     <string name="choose_gender">تأكد من تحديد جنسك</string>
-    <string name="list_of_invitees">عدد المدعوون</string>
+    <string name="list_of_invitees">عدد المدعوين</string>
     <string name="hospitality_type">الضيافة</string>
     <string name="photography_options">خيارات التّصوير</string>
     <string name="others">أخرى</string>
@@ -109,6 +109,10 @@
         \n %6$s\n
         أخرى:
         \n %7$s\n
+        عدد المدعوين:
+        \n %8$s\n
+        السعر:
+        \n %9$s\n
     </string>
 
     <string name="profileData">
@@ -149,7 +153,12 @@
     <string name="aboutApp">هذا التطبيق من تصميم فريق ترانيم</string>
     <string name="about">حول</string>
     <string name="changeLanguage">تغيير اللغة</string>
-
+    <string name="mainInfoMessage">
+        اختر نوع الحفل الذي تود إقامته لحجز مكان وموعد!
+    </string>
+    <string name="mainInfoTitle">
+        مساعدة
+    </string>
     <string-array name="photographyOptions">
         <item>قياسي</item>
         <item>اكسترا</item>

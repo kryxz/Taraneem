@@ -102,6 +102,12 @@
         Info:
         \n %3$s
     </string>
+    <string name="mainInfoMessage">
+        Use this page to choose what type of event you want to book for!
+    </string>
+    <string name="mainInfoTitle">
+        Info
+    </string>
     <string name="bookingInfoFull">
         Event:
         \n %1$s
@@ -119,6 +125,10 @@
         \n %6$s\n
         Others:
         \n %7$s\n
+        Invitees Count:
+        \n %8$s\n
+        Total Price:
+        \n %9$s
     </string>
 
     <string name="profileData">

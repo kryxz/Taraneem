@@ -142,10 +142,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    assert FirebaseAuth.getInstance().getCurrentUser() != null;
-                    String id = FirebaseAuth.getInstance().getCurrentUser().getUid().substring(0, 10);
-                    user.setId(id);
-                    ref.child(id)
+                    ref.child(user.getId())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -165,7 +162,6 @@ public class RegisterFragment extends Fragment {
     private User userData() {
         //User Object that we will return
         User user = new User();
-
 
         //Defining Edit Texts...
         AppCompatEditText nameED = view.findViewById(R.id.registerNameEd);

@@ -8,18 +8,10 @@ public class Booking {
 
 
     private String id; //used to identify booking
-    private String eventDate;
-    private String eventTime;
-    private int eventDuration;
-    private String hallName;
-    private String others;
-    private String hospitality;
-    private String photoOptions;
+    private String eventDate, eventTime, hallName,
+            others, hospitality, photoOptions, bookingType;
+    private int eventDuration, inviteesCount, price;
 
-    private int inviteesCount;
-    private int price;
-
-    private String bookingType;
 
     public int hourOfEvent() {
         return Integer.parseInt(eventTime.substring(0, eventTime.indexOf(":")));
@@ -68,21 +60,6 @@ public class Booking {
                 !photoOptions.isEmpty() && inviteesCount != 0;
     }
 
-    public Booking(String eventDate, String eventTime, int eventDuration,
-                   String hallName, String others, int inviteesCount, int price,
-                   String hospitality, String photoOptions, String bookingType) {
-
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
-        this.eventDuration = eventDuration;
-        this.hallName = hallName;
-        this.others = others;
-        this.inviteesCount = inviteesCount;
-        this.price = price;
-        this.hospitality = hospitality;
-        this.photoOptions = photoOptions;
-        this.bookingType = bookingType;
-    }
 
     public String getBookingType() {
         return bookingType;
