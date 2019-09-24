@@ -6,11 +6,10 @@ import com.taraneem.R;
 
 import java.util.Arrays;
 
+//class used for storing booking data
 public class Booking {
-
-    public enum BookingType {
-        Default, Wedding, Birthday, Graduation, Store
-    }
+    //used to get strings from resources
+    private Resources res;
 
 
     private String id; //used to identify booking
@@ -18,45 +17,41 @@ public class Booking {
             others, hospitality, photoOptions, bookingType;
     private int eventDuration, inviteesCount, price, hallCost;
 
-    private Resources res;
+    //empty constructor
+    public Booking() {
+
+    }
 
     public void setRes(Resources res) {
         this.res = res;
     }
 
+    //returns the hour of an event from eventDate
     public int hourOfEvent() {
         return Integer.parseInt(eventTime.substring(0, eventTime.indexOf(":")));
     }
 
+    //returns minutes of an event from eventDate
     public int minutesOfEvent() {
         return Integer.parseInt(eventTime.substring(eventTime.indexOf(":") + 1));
     }
 
+    //returns year of an event from eventDate
     public String yearOfDate() {
         return eventDate.substring(0, 4);
     }
 
+    //returns year of an event from eventDate
     public String monthOfDate() {
         return eventDate.substring(eventDate.indexOf('-') + 1, eventDate.lastIndexOf('-'));
     }
 
+    //returns day of an event from eventDate
     public String dayOfDate() {
         return eventDate.substring(eventDate.lastIndexOf('-') + 1, eventDate.lastIndexOf('-') + 3).replace(" ", "");
     }
 
-    public Booking() {
-
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    //price will be calculated according to many factors.
+    //price is affected by various factors.
     private void setPrice() {
         int inviteesCost = inviteesCount / 100;
         int photographyCost = Arrays.asList(
@@ -71,11 +66,24 @@ public class Booking {
         price = 400 + inviteesCost * 50 +
                 hallCost * 50 + photographyCost * 50 + hospitalityCost * 50;
 
-        //floor the price to 1000, or ceil it to 600.
+        //floor to 1000, or ceil to 600.
         if (price < 600)
             price = 600;
         else if (price > 1000)
             price = 1000;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    //booking types. default equals null
+    public enum BookingType {
+        Default, Wedding, Birthday, Graduation, Store
     }
 
 

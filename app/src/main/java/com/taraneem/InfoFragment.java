@@ -31,8 +31,11 @@ import com.taraneem.data.User;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.taraneem.Common.getEventPath;
+
 
 public class InfoFragment extends Fragment {
+
     private View view; //instead of using getView(). This makes things better.
 
     private Booking booking;
@@ -50,6 +53,7 @@ public class InfoFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         //view is not null here.
@@ -58,6 +62,7 @@ public class InfoFragment extends Fragment {
         setFields();
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     private void setFields() {
         //wedding, birthday...
@@ -115,7 +120,7 @@ public class InfoFragment extends Fragment {
                                 hall.get("info"));
 
                         //show hall info dialog, which is the same as the one in Booking Fragment.
-                        BookingFragment.viewInfoDialog(infoMessage, booking.getHallName(), view);
+                        Common.viewInfoDialog(infoMessage, booking.getHallName(), view);
                     }
                 });
             }
@@ -140,9 +145,11 @@ public class InfoFragment extends Fragment {
 
     }
 
+
     private String removeWeekDays(String string) {
         return string.substring(0, string.lastIndexOf('-') + 3);
     }
+
 
     private void updateBookingData(final View v) {
         String userID = Objects.requireNonNull(getContext()).getSharedPreferences("userPrefs", 0).getString("userID", "");
@@ -171,13 +178,6 @@ public class InfoFragment extends Fragment {
         });
     }
 
-    static DatabaseReference getEventPath(String date, String id, String hallName) {
-        String year = date.substring(0, 4);
-        String month = date.substring(date.indexOf('-') + 1, date.lastIndexOf('-'));
-        String day = date.substring(date.lastIndexOf('-') + 1, date.lastIndexOf('-') + 3).replace(" ", "");
-        return FirebaseDatabase.getInstance().getReference().child(hallName)
-                .child(year).child(month).child(day).child(id);
-    }
 
     private void showEditDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -202,18 +202,18 @@ public class InfoFragment extends Fragment {
         editHospitalityText.setText(booking.getHospitality());
         editOthersText.setText(booking.getOthers());
         booking.setRes(view.getContext().getResources()); //res is needed to calculate the final price!
-        BookingFragment.setSpinnerAdapter(photoSpinner, infoPriceText, R.array.photographyOptions, booking, view);
-        BookingFragment.setSpinnerAdapter(inviteesSpinner, infoPriceText, R.array.inviteesNumbers, booking, view);
+        Common.setSpinnerAdapter(photoSpinner, infoPriceText, R.array.photographyOptions, booking, view);
+        Common.setSpinnerAdapter(inviteesSpinner, infoPriceText, R.array.inviteesNumbers, booking, view);
         editHospitalityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BookingFragment.showHospitalityDialog(booking, editHospitalityText, infoPriceText, fragment, view);
+                Common.showHospitalityDialog(booking, editHospitalityText, infoPriceText, fragment, view);
             }
         });
         editOthersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BookingFragment.showOthersDialog(booking, editOthersText, fragment, view);
+                Common.showOthersDialog(booking, editOthersText, fragment, view);
             }
         });
         layout.findViewById(R.id.confirmBookingEdit).setOnClickListener(new View.OnClickListener() {
@@ -223,6 +223,5 @@ public class InfoFragment extends Fragment {
             }
         });
     }
-
 
 }

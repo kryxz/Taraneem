@@ -6,6 +6,7 @@ public class User {
     private String name, dob, id, phoneNo, email;
     private boolean gender;
 
+    //bookings used in the recycler view. Stores the booking id, hall etc.
     private HashMap<String, String> bookings;
 
     public void setBookings(HashMap<String, String> bookings) {

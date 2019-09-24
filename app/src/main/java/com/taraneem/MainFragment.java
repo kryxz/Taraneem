@@ -1,7 +1,6 @@
 package com.taraneem;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +17,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 import com.taraneem.data.Booking;
 
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -42,6 +37,7 @@ public class MainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.view = view;
@@ -57,6 +53,7 @@ public class MainFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.infoBtn)
@@ -64,10 +61,12 @@ public class MainFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
     private void showInfoDialog() {
         String message = getString(R.string.mainInfoMessage), title = getString(R.string.mainInfoTitle);
-        BookingFragment.viewInfoDialog(message, title, view);
+        Common.viewInfoDialog(message, title, view);
     }
+
 
     private void cardViewListener() {
         Set<MaterialCardView> cardViews = new HashSet<>();
@@ -100,16 +99,6 @@ public class MainFragment extends Fragment {
                 }
             });
         }
-    }
-
-    private String dateToString(Long milliseconds) {
-        // returns date as a string from a time, formatted as: 2019/09/17-hour24;
-        return new SimpleDateFormat("yyyy/MM/dd-HH", Locale.US).format(milliseconds);
-    }
-
-    static void hideKeyboard(View view) {
-        ((InputMethodManager) Objects.requireNonNull(view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)))
-                .hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

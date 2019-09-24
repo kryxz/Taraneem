@@ -51,12 +51,14 @@ public class UserBookingsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_bookings, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         this.view = v;
         setUpAdapter();
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     private void setUpAdapter() {
         if (TempData.getUserData() == null) {
@@ -70,6 +72,7 @@ public class UserBookingsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
+
 
     private BookingsAdapter createAdapter() {
         HashMap<String, String> map = TempData.getUserData().getBookings();
@@ -86,6 +89,7 @@ public class UserBookingsFragment extends Fragment {
         return new BookingsAdapter(datesList, hallNamesList, idsList, getActivity(), progressBar);
 
     }
+
 
     static class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.BookingsRV> {
 
@@ -110,19 +114,20 @@ public class UserBookingsFragment extends Fragment {
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deleteEvent(InfoFragment.getEventPath(datesList.get(position),
+                    deleteEvent(Common.getEventPath(datesList.get(position),
                             idsList.get(position), hallNamesList.get(position)), position);
                 }
             });
             holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    editEvent(InfoFragment.getEventPath(datesList.get(position),
+                    editEvent(Common.getEventPath(datesList.get(position),
                             idsList.get(position), hallNamesList.get(position)), position, view);
                 }
             });
 
         }
+
 
         @NonNull
         @Override
@@ -130,6 +135,7 @@ public class UserBookingsFragment extends Fragment {
             return new BookingsRV((LinearLayoutCompat) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.booking_item, parent, false));
         }
+
 
         void editEvent(final DatabaseReference reference, final int position, final View view) {
             progressBar.setVisibility(View.VISIBLE);
@@ -183,6 +189,7 @@ public class UserBookingsFragment extends Fragment {
             });
         }
 
+
         static class BookingsRV extends RecyclerView.ViewHolder {
             final LinearLayoutCompat layoutView;
             final AppCompatTextView textView;
@@ -197,6 +204,7 @@ public class UserBookingsFragment extends Fragment {
                 edit = layoutView.findViewById(R.id.editItemButton);
             }
         }
+
 
         private void deleteEvent(final DatabaseReference reference, final int position) {
             //Dialog buttons listener

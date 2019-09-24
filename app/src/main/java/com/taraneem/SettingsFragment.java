@@ -2,9 +2,7 @@ package com.taraneem;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.TaskStackBuilder;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,13 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.taraneem.data.TempData;
 
 import java.util.ArrayList;
@@ -46,12 +42,14 @@ public class SettingsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.view = view;
         setUpSettingsList();
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     private void setUpSettingsList() {
         RecyclerView recyclerView = view.findViewById(R.id.settingsRV);
@@ -86,6 +84,7 @@ public class SettingsFragment extends Fragment {
             }
         }
 
+
         static class SettingsItem {
             final private int icon;
             final private String title;
@@ -100,10 +99,12 @@ public class SettingsFragment extends Fragment {
 
         }
 
+
         SettingsAdapter(List<SettingsItem> stringList, Activity theActivity) {
             list = stringList;
             activity = theActivity;
         }
+
 
         @NonNull
         @Override
@@ -113,6 +114,7 @@ public class SettingsFragment extends Fragment {
 
             return new SettingsRV(v);
         }
+
 
         @Override
         public void onBindViewHolder(@NonNull SettingsRV holder, final int position) {
@@ -129,7 +131,7 @@ public class SettingsFragment extends Fragment {
                 public void onClick(View view) {
                     switch (list.get(position).option) {
                         case Logout:
-                            logoutNow(activity);
+                            Common.logoutNow(activity);
                             break;
 
                         case Bookings:
@@ -169,40 +171,8 @@ public class SettingsFragment extends Fragment {
             activity.finish();
         }
 
-        static void logoutNow(final Activity activity) {
-            //Dialog buttons listener
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
 
-                        case DialogInterface.BUTTON_POSITIVE:
-                            //Yes
-                            FirebaseAuth.getInstance().signOut();
-                            TaskStackBuilder.create(activity)
-                                    .addNextIntent(new Intent(activity, LoginActivity.class))
-                                    .startActivities();
-                            activity.finish();
-                            break;
 
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No
-                            dialog.dismiss();
-                            break;
-                    }
-                }
-            };
-            //defining a dialog
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(activity.getString(R.string.confirm_logout)).setMessage(
-                    activity.getString(R.string.are_sure)).setPositiveButton(activity.getString(R.string.yes), dialogClickListener)
-                    .setNegativeButton(activity.getString(R.string.no), dialogClickListener);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            ((AppCompatTextView) dialog.findViewById(android.R.id.message)).setTypeface(ResourcesCompat.getFont(activity, R.font.titillium_regular));
-
-        }
 
         private String getString(int id) {
             return activity.getString(id);
@@ -219,14 +189,16 @@ public class SettingsFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.userBookingsFragment);
         }
 
+
         //Goto Profile fragment.
         void goToProfile(View view) {
             Navigation.findNavController(view).navigate(R.id.profileFragment);
         }
 
+
         //show some info
         void aboutApp(View view) {
-            BookingFragment.viewInfoDialog(getString(R.string.aboutApp), getString(R.string.about), view);
+            Common.viewInfoDialog(getString(R.string.aboutApp), getString(R.string.about), view);
         }
 
 
@@ -234,6 +206,7 @@ public class SettingsFragment extends Fragment {
         public int getItemCount() {
             return list.size();
         }
+
 
         enum Option {
             Logout, Bookings, Profile, PrivacyPolicy, About, Language

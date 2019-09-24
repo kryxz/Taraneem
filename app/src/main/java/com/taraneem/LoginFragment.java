@@ -42,6 +42,7 @@ public class LoginFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //view is fully created here. So, initialize everything.
@@ -62,6 +63,7 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+
 
     private void chooseLanguage() {
         String langPref = view.getContext().getSharedPreferences("userPrefs", 0).getString("langPref", "");
@@ -98,12 +100,13 @@ public class LoginFragment extends Fragment {
     }
 
 
+
     private void buttonListeners() {
         final AppCompatEditText passwordEd = view.findViewById(R.id.loginPasswordTV);
         final AppCompatEditText emailEd = view.findViewById(R.id.loginEmailTV);
 
         //hides and shows password on 'eye' icon click.
-        RegisterFragment.passwordView(passwordEd);
+        Common.passwordView(passwordEd);
 
         //login button click listener.
         view.findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,7 @@ public class LoginFragment extends Fragment {
         });
     }
 
+
     private void showHideProgressBar(boolean shouldShow) {
         if (shouldShow) {
             view.findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
@@ -139,8 +143,9 @@ public class LoginFragment extends Fragment {
 
     }
 
+
     private void loginNow(String email, String password) {
-        MainFragment.hideKeyboard(view);
+        Common.hideKeyboard(view);
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

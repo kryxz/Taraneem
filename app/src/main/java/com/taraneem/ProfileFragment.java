@@ -44,12 +44,14 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         user = new User();
         setFields(view);
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     private void setFields(final View view) {
         if (TempData.getUserData() != null)
@@ -71,7 +73,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment.SettingsAdapter.logoutNow(getActivity());
+                Common.logoutNow(getActivity());
             }
         });
     }
@@ -92,7 +94,7 @@ public class ProfileFragment extends Fragment {
         final AppCompatTextView emailEd = layout.findViewById(R.id.editEmail);
         final AppCompatEditText bodEd = layout.findViewById(R.id.editBod);
 
-        RegisterFragment.showDatePickerDialog(bodEd, getFragmentManager());
+        Common.showDatePickerDialog(bodEd, getFragmentManager());
 
         nameEd.setText(user.getName());
         bodEd.setText(user.getDob());
@@ -142,6 +144,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
     }
+
 
     private void updateData() {
         String userID = Objects.requireNonNull(getActivity()).getSharedPreferences("userPrefs", 0).getString("userID", "");

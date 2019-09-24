@@ -1,20 +1,14 @@
 package com.taraneem;
 
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,9 +18,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,12 +30,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.taraneem.data.User;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
+import static com.taraneem.Common.passwordView;
+import static com.taraneem.Common.showDatePickerDialog;
 
 
 public class RegisterFragment extends Fragment {
@@ -70,6 +63,7 @@ public class RegisterFragment extends Fragment {
         registerButton();
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     private void backToLogin() {
         //two buttons listen to onclick. Goes back to login page when clicked.
@@ -135,8 +129,9 @@ public class RegisterFragment extends Fragment {
 
     }
 
+
     private void sendData(final DatabaseReference ref, final User user, final String password) {
-        MainFragment.hideKeyboard(view);
+        Common.hideKeyboard(view);
         FirebaseAuth.getInstance().signInWithEmailAndPassword(user.getEmail(),
                 password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -157,6 +152,7 @@ public class RegisterFragment extends Fragment {
         });
 
     }
+
 
     @Nullable
     private User userData() {
@@ -251,112 +247,6 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    //shows a datePick dialog when clicked on the editText. Takes a fragmentManager to display the dialog.
-    static void showDatePickerDialog(AppCompatEditText editText, final FragmentManager manager) {
-        final RegisterFragment.DatePickerFragment datePickerFragment = new RegisterFragment.DatePickerFragment(
-                //01/01/1930 -1262312624000L
-                editText, -1262312624000L,
-                new Date().getTime() - 568080000000L);
-
-        editText.setFocusableInTouchMode(false);
-
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                datePickerFragment.show(manager, "datePicker");
-
-            }
-        });
-    }
-
-
-    //Public and static: Android requires the class to be so.
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-
-        final AppCompatEditText theEditText; //set picked date in this
-        final private Long minDate; // minimum date that can be chosen by user
-        final private Long maxDate; // maximum date that can be chosen by user
-
-
-        //Constructor
-        DatePickerFragment(AppCompatEditText editText, Long minimumDate, Long maximumDate) {
-
-            theEditText = editText;
-            minDate = minimumDate;
-            maxDate = maximumDate;
-        }
-
-
-        @NonNull
-        @Override
-        //Creates a dialog, customizes a few things and returns it
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            // Use date(maxDate) as the default date in the picker
-            // by making a Calendar instance and setting time to maxDate.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(minDate);
-
-            //Getting fields from calendar instance.
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DATE);
-
-            // Create a new instance of DatePickerDialog and return it
-            assert getContext() != null;
-            //instantiating a Date picker dialog
-            DatePickerDialog dialog = new DatePickerDialog(getContext(), this, year, month, day);
-
-            //Setting max and min date.
-            dialog.getDatePicker().setMinDate(minDate);
-            dialog.getDatePicker().setMaxDate(maxDate);
-
-            return dialog;
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            //set new date to the EditText we got from the Constructor.
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DATE, day);
-            String dayString = Objects.requireNonNull(getContext()).getResources().getStringArray(R.array.daysOfWeek)[calendar.get(Calendar.DAY_OF_WEEK) - 1];
-            //Since January is 0. December is 11. So we should increment month by 1.
-            String dateString = year + "-" + (month + 1) + "-" + day + " " + dayString;
-            theEditText.setText(dateString);
-
-        }
-
-
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")//disables an ide warning.
-    static void passwordView(final AppCompatEditText editText) {
-        //hides and shows password when user clicks at the 'eye' icon.
-        editText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[0].getBounds().width())) {
-                        if (editText.getTransformationMethod() == null) {
-                            //Hides password.
-                            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visibility_off, 0);
-                            editText.setTransformationMethod(new PasswordTransformationMethod());
-                        } else {
-                            //Shows password
-                            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visibility, 0);
-                            editText.setTransformationMethod(null);
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
 
 
 }
