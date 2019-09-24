@@ -48,8 +48,9 @@ public class User {
         this.name = name;
     }
 
+
     public String getDob() {
-        return dob;
+        return dob.substring(0, dob.lastIndexOf('-') + 3);
     }
 
     public void setDob(String dob) {

@@ -1,5 +1,11 @@
 package com.taraneem.data;
 
+import android.content.res.Resources;
+
+import com.taraneem.R;
+
+import java.util.Arrays;
+
 public class Booking {
 
     public enum BookingType {
@@ -10,8 +16,13 @@ public class Booking {
     private String id; //used to identify booking
     private String eventDate, eventTime, hallName,
             others, hospitality, photoOptions, bookingType;
-    private int eventDuration, inviteesCount, price;
+    private int eventDuration, inviteesCount, price, hallCost;
 
+    private Resources res;
+
+    public void setRes(Resources res) {
+        this.res = res;
+    }
 
     public int hourOfEvent() {
         return Integer.parseInt(eventTime.substring(0, eventTime.indexOf(":")));
@@ -46,8 +57,25 @@ public class Booking {
     }
 
     //price will be calculated according to many factors.
-    public void calculatePrice() {
-        price = inviteesCount * 2;
+    private void setPrice() {
+        int inviteesCost = inviteesCount / 100;
+        int photographyCost = Arrays.asList(
+                res.getStringArray(R.array.photographyOptions)).indexOf(photoOptions) + 1;
+        int hospitalityCost = 0;
+        if (hospitality.contains(res.getString(R.string.cake)))
+            hospitalityCost += 1;
+        if (hospitality.contains(res.getString(R.string.pepsi)))
+            hospitalityCost += 1;
+        if (hospitality.contains(res.getString(R.string.knafeh)))
+            hospitalityCost += 1;
+        price = 400 + inviteesCost * 50 +
+                hallCost * 50 + photographyCost * 50 + hospitalityCost * 50;
+
+        //floor the price to 1000, or ceil it to 600.
+        if (price < 600)
+            price = 600;
+        else if (price > 1000)
+            price = 1000;
     }
 
 
@@ -97,9 +125,12 @@ public class Booking {
         return hallName;
     }
 
-    public void setHallName(String hallName) {
+    public void setHallName(String hallName, int cost) {
         this.hallName = hallName;
+        hallCost = cost;
+        setPrice();
     }
+
 
     public String getOthers() {
         return others;
@@ -107,6 +138,7 @@ public class Booking {
 
     public void setOthers(String others) {
         this.others = others;
+        setPrice();
     }
 
     public int getInviteesCount() {
@@ -115,14 +147,11 @@ public class Booking {
 
     public void setInviteesCount(int inviteesCount) {
         this.inviteesCount = inviteesCount;
+        setPrice();
     }
 
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getHospitality() {
@@ -131,6 +160,7 @@ public class Booking {
 
     public void setHospitality(String hospitality) {
         this.hospitality = hospitality;
+        setPrice();
     }
 
     public String getPhotoOptions() {
@@ -139,6 +169,7 @@ public class Booking {
 
     public void setPhotoOptions(String photoOptions) {
         this.photoOptions = photoOptions;
+        setPrice();
     }
 }
 

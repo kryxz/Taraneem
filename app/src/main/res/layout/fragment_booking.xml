@@ -34,6 +34,7 @@
                     style="@style/InputEditTextStyle"
                     android:layout_weight="1"
                     android:id="@+id/eventDate"
+                    android:gravity="center"
                     android:background="@drawable/text_view_bg"
                     android:drawableEnd="@drawable/ic_date_white"
                     android:hint="@string/tap_to_choose"
@@ -250,15 +251,12 @@
                     android:layout_weight="1"
                     android:text="@string/others" />
 
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/otherSpinner"
-                    android:layout_width="match_parent"
-                    android:gravity="center_horizontal"
-                    android:padding="8dp"
-                    android:layout_margin="8dp"
-                    android:textAlignment="center"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/othersText"
                     android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    style="@style/bookingTextView"
+                    android:text="@string/tap_to_choose"
+                    android:textSize="13sp" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -275,6 +273,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
                     android:padding="8dp"
+                    android:id="@+id/priceText"
+                    android:layout_margin="8dp"
                     android:background="@drawable/edit_text_bg"
                     android:text="@string/total_price" />
 

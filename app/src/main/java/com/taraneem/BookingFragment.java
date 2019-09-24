@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +55,7 @@ public class BookingFragment extends Fragment {
     private View view;
 
     private Booking thisBooking;
-    private Fragment fragment = this;
+    final private Fragment fragment = this;
 
 
     public BookingFragment() {
@@ -68,118 +70,9 @@ public class BookingFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_booking, container, false);
     }
 
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //view fully created. we can use it now.
-        this.view = view;
-        thisBooking = new Booking();
-        hallsSpinner(); //gets Halls data from Fire base and puts them in the spinner.
-        getData(); //gets data from previous fragment. Determines Wedding/Birthday etc..
-        setUpFields(); //sets some texts. Initializes spinners and their listeners. Adds a listener to other views(Duration text, submit button, etc).
-
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    private void sendBookingData(DatabaseReference databaseReference) {
-        //all booking data are correct. Date and time are available. We can now store them in the database.
-
-        TempData.setCurrentBooking(thisBooking); //stores booking object to temp data.
-
-        //random uuid.
-        String uuid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().substring(0, 5)
-                + UUID.randomUUID().toString().substring(0, 5);
-        thisBooking.setId(uuid);
-        databaseReference.child(uuid)
-                .setValue(thisBooking).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                //go to booking info fragment.
-                Navigation.findNavController(view).navigate(R.id.bookingToInfo);
-            }
-        });
-    }
-
-    private void submitNow() {
-        if (thisBooking.allFieldsOK()) {
-            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(thisBooking.getHallName()).child(thisBooking.yearOfDate())
-                    .child(thisBooking.monthOfDate()).child(thisBooking.dayOfDate());
-
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    boolean isTaken = true;
-                    if (!dataSnapshot.exists() || !dataSnapshot.hasChildren())
-                        sendBookingData(databaseReference);
-                    else
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            isTaken = true; //Assume this time is taken, for now.
-
-                            //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
-                            String time = Objects.requireNonNull(ds.child("eventTime").getValue()).toString();
-                            int dur = Integer.parseInt(Objects.requireNonNull(ds.child("eventDuration").getValue()).toString());
-
-                            int hours = Integer.parseInt(time.substring(0, time.indexOf(":")));
-                            int minutes = Integer.parseInt(time.substring(time.indexOf(":") + 1)) + 30;
-
-                            int endHours = dur + hours + minutes / 60;
-                            int endMinutes = minutes % 60;
-                            int newHours = thisBooking.hourOfEvent();
-                            int newMinutes = thisBooking.minutesOfEvent();
-
-                            float theTime = hours + (float) minutes / 60;
-                            float endTime = endHours + (float) endMinutes / 60;
-                            float newTime = newHours + (float) newMinutes / 60;
-                            float newEndTime = thisBooking.getEventDuration() + newHours + (float) newMinutes / 60;
-
-                            Log.i("BookingNow", "theTime: " + theTime);
-                            Log.i("BookingNow", "endTime: " + endTime);
-                            Log.i("BookingNow", "newTime: " + newTime);
-                            Log.i("BookingNow", "newEndTime: " + newEndTime);
-                            if ((newTime < endTime && newTime >= theTime)
-                                    || (newTime < endTime && newTime >= theTime - 1)
-                                    || (newEndTime <= endTime && newEndTime > theTime)) {
-                                Log.i("BookingNow", "Floating... We're in range! Don't Book!");
-                                Log.i("BookingNow", Objects.requireNonNull(ds.getKey()));
-                                Log.i("BookingNow", "Existing event starts at " + hours + ":" + minutes
-                                        + " and ends at " + endHours + ":" + endMinutes);
-                                break;
-                            }
-                            Log.i("BookingNow", "Not in Range");
-                            Log.i("BookingNow", "-------------------------");
-                            isTaken = false; //time is free. User can Book!
-
-                        }
-                    if (!isTaken) {
-                        sendBookingData(databaseReference);
-                        Log.i("BookingNow", "We gotcha. Booking Now!");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    //Empty required override.
-                }
-            });
-
-        } else
-            Toast.makeText(view.getContext(), getString(R.string.checkFields), Toast.LENGTH_SHORT).show();
-    }
-
-
-    private HashMap<String, String> getMap(DataSnapshot hall) {
-        //Take a Data snapshot and iterate through its children to make a HashMap.
-
-        //declare map
-        HashMap<String, String> map = new HashMap<>();
-        //a for loop to iterate through children.
-        for (DataSnapshot dataSnapshot : hall.getChildren())
-            //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
-            map.put(dataSnapshot.getKey(), Objects.requireNonNull(dataSnapshot.getValue()).toString());
-        return map;
-    }
-
-    static void showHospitalityDialog(final Booking theBooking, final AppCompatTextView textView, Fragment fragment, View view) {
+    static void showHospitalityDialog(final Booking theBooking,
+                                      final AppCompatTextView textView, final AppCompatTextView priceTextView,
+                                      Fragment fragment, View view) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         @SuppressLint("InflateParams")//hides ide warning
@@ -238,8 +131,257 @@ public class BookingFragment extends Fragment {
                 //add selected to booking data
                 theBooking.setHospitality(hospitality.toString());
                 dialog.dismiss(); //hide dialog
+
+                //update price!
+                updatePriceText(priceTextView, theBooking);
             }
         });
+    }
+
+    private void sendBookingData(DatabaseReference databaseReference) {
+        //all booking data are correct. Date and time are available. We can now store them in the database.
+
+        TempData.setCurrentBooking(thisBooking); //stores booking object to temp data.
+
+        //random uuid.
+        String uuid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().substring(0, 5)
+                + UUID.randomUUID().toString().substring(0, 5);
+        thisBooking.setId(uuid);
+        databaseReference.child(uuid)
+                .setValue(thisBooking).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //go to booking info fragment.
+                Navigation.findNavController(view).navigate(R.id.bookingToInfo);
+            }
+        });
+    }
+
+    private static void updatePriceText(AppCompatTextView textView, Booking theBooking) {
+        textView.setText(textView.getContext().getString(R.string.total_price, theBooking.getPrice()));
+    }
+
+
+    private HashMap<String, String> getMap(DataSnapshot hall) {
+        //Take a Data snapshot and iterate through its children to make a HashMap.
+
+        //declare map
+        HashMap<String, String> map = new HashMap<>();
+        //a for loop to iterate through children.
+        for (DataSnapshot dataSnapshot : hall.getChildren())
+            //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
+            map.put(dataSnapshot.getKey(), Objects.requireNonNull(dataSnapshot.getValue()).toString());
+        return map;
+    }
+
+    static void showOthersDialog(final Booking theBooking,
+                                 final AppCompatTextView textView,
+                                 Fragment fragment, View view) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        @SuppressLint("InflateParams")//hides ide warning
+        //layout used in this dialog
+        final View layout = fragment.getLayoutInflater().inflate(R.layout.others_dialog, null);
+
+
+        builder.setView(layout);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //declare a few check boxes and a button.
+        final AppCompatCheckBox surpriseCheck = layout.findViewById(R.id.surpriseCheck);
+        final AppCompatCheckBox particularEventCheck = layout.findViewById(R.id.particularEventCheck);
+        final AppCompatCheckBox customCheck = layout.findViewById(R.id.customCheck);
+        final AppCompatButton confirmOthers = layout.findViewById(R.id.confirmOthers);
+
+        final StringBuilder others = new StringBuilder();
+        final String currentHospitality = theBooking.getHospitality();
+
+        //check if field already contains a specific string. Check box accordingly.
+        surpriseCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.surprise)));
+        particularEventCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.particular_event)));
+        customCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.customize)));
+
+        //confirm button listener
+        confirmOthers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (surpriseCheck.isChecked())
+                    others.append(view.getContext().getString(R.string.surprise));
+
+                if (particularEventCheck.isChecked())
+                    if (others.length() == 0)
+                        others.append(view.getContext().getString(R.string.particular_event));
+                    else
+                        others.append(", ").append(view.getContext().getString(R.string.particular_event));
+                if (customCheck.isChecked())
+                    if (others.length() == 0)
+                        others.append(view.getContext().getString(R.string.customize));
+                    else
+                        others.append(", ").append(view.getContext().getString(R.string.customize));
+
+                if (others.length() != 0)
+                    textView.setText(others.toString());
+                else
+                    textView.setText(view.getContext().getString(R.string.tap_to_choose));
+
+                //add selected to booking data
+                theBooking.setOthers(others.toString());
+                dialog.dismiss(); //hide dialog
+            }
+        });
+    }
+
+    static void setSpinnerAdapter(final AppCompatSpinner spinner, final AppCompatTextView priceTextView,
+                                  final int array, final Booking theBooking, View view) {
+        //takes a spinner and an id to array to set up.
+
+        final ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                view.getContext(), //context
+                array, //integer id
+                android.R.layout.simple_spinner_item
+        );
+        final String[] arrayData = view.getContext().getResources().getStringArray(array);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        if (spinner.getId() == R.id.editPhotoSpinner || spinner.getId() == R.id.photoSpinner)
+            spinner.setSelection(Arrays.asList(view.getContext().getResources()
+                    .getStringArray(array)).indexOf(theBooking.getPhotoOptions()));
+
+        if (spinner.getId() == R.id.editInviteesSpinner || spinner.getId() == R.id.inviteesSpinner)
+            spinner.setSelection(Arrays.asList(view.getContext().getResources()
+                    .getStringArray(array)).indexOf(String.valueOf(theBooking.getInviteesCount())));
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                switch (spinner.getId()) {
+                    case R.id.editPhotoSpinner:
+                    case R.id.photoSpinner:
+                        theBooking.setPhotoOptions(arrayData[pos]);
+                        break;
+                    case R.id.editInviteesSpinner:
+                    case R.id.inviteesSpinner:
+                        theBooking.setInviteesCount(Integer.parseInt(arrayData[pos]));
+                        break;
+                }
+                updatePriceText(priceTextView, theBooking);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Required empty override
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //view fully created. we can use it now.
+        this.view = view;
+        thisBooking = new Booking();
+        thisBooking.setRes(view.getContext().getResources()); //res is needed to calculate the final price!
+        hallsSpinner(); //gets Halls data from Fire base and puts them in the spinner.
+        getData(); //gets data from previous fragment. Determines Wedding/Birthday etc..
+        setUpFields(); //sets some texts. Initializes spinners and their listeners. Adds a listener to other views(Duration text, submit button, etc).
+        textWatch();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void submitNow() {
+        if (thisBooking.allFieldsOK()) {
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(thisBooking.getHallName()).child(thisBooking.yearOfDate())
+                    .child(thisBooking.monthOfDate()).child(thisBooking.dayOfDate());
+
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean isTaken = true;
+                    if (!dataSnapshot.exists() || !dataSnapshot.hasChildren())
+                        sendBookingData(databaseReference);
+                    else
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            isTaken = true; //Assume this time is taken, for now.
+
+                            //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
+                            String time = Objects.requireNonNull(ds.child("eventTime").getValue()).toString();
+                            int dur = Integer.parseInt(Objects.requireNonNull(ds.child("eventDuration").getValue()).toString());
+
+                            int hours = Integer.parseInt(time.substring(0, time.indexOf(":")));
+                            int minutes = Integer.parseInt(time.substring(time.indexOf(":") + 1)) + 30;
+
+                            int endHours = dur + hours + minutes / 60;
+                            int endMinutes = minutes % 60;
+                            int newHours = thisBooking.hourOfEvent();
+                            int newMinutes = thisBooking.minutesOfEvent();
+
+                            float theTime = hours + (float) minutes / 60;
+                            float endTime = endHours + (float) endMinutes / 60;
+                            float newTime = newHours + (float) newMinutes / 60;
+                            float newEndTime = thisBooking.getEventDuration() + newHours + (float) newMinutes / 60;
+
+                            Log.i("BookingNow", "theTime: " + theTime);
+                            Log.i("BookingNow", "endTime: " + endTime);
+                            Log.i("BookingNow", "newTime: " + newTime);
+                            Log.i("BookingNow", "newEndTime: " + newEndTime);
+                            if ((newTime < endTime && newTime >= theTime)
+                                    || (newTime < endTime && newTime >= theTime - 1)
+                                    || (newEndTime <= endTime && newEndTime > theTime)) {
+                                Log.i("BookingNow", "Floating... We're in range! Don't Book!");
+                                Log.i("BookingNow", Objects.requireNonNull(ds.getKey()));
+                                Log.i("BookingNow", "Existing event starts at " + hours + ":" + minutes
+                                        + " and ends at " + endHours + ":" + endMinutes);
+                                viewInfoDialog(getString(R.string.cannotBook), getString(R.string.cannotBookTitle), view);
+                                break;
+                            }
+                            Log.i("BookingNow", "Not in Range");
+                            Log.i("BookingNow", "-------------------------");
+                            isTaken = false; //time is free. User can Book!
+
+                        }
+                    if (!isTaken) {
+                        sendBookingData(databaseReference);
+                        Log.i("BookingNow", "We gotcha. Booking Now!");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //Empty required override.
+                }
+            });
+
+        } else
+            Toast.makeText(view.getContext(), getString(R.string.checkFields), Toast.LENGTH_SHORT).show();
+    }
+
+    private void textWatch() {
+        ArrayList<AppCompatTextView> textViews = new ArrayList<>();
+        textViews.add((AppCompatTextView) view.findViewById(R.id.startTime));
+        textViews.add((AppCompatTextView) view.findViewById(R.id.hospitalityText));
+        textViews.add((AppCompatTextView) view.findViewById(R.id.othersText));
+
+        for (AppCompatTextView textView : textViews)
+            textView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    //required
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //text is changed, update price accordingly!l
+                    updatePriceText((AppCompatTextView) view.findViewById(R.id.priceText), thisBooking);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    //required
+                }
+            });
+
     }
 
     private void hallsSpinner() {
@@ -289,10 +431,11 @@ public class BookingFragment extends Fragment {
                 //halls spinner listener.
                 hallSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
                         //adds selected item to booking data.
-                        thisBooking.setHallName(hallsList.get(i));
-
+                        thisBooking.setHallName(hallsList.get(i),
+                                Integer.parseInt(Objects.requireNonNull(halls.get(i).get("cost"))));
+                        updatePriceText((AppCompatTextView) (view.findViewById(R.id.priceText)), thisBooking);
                     }
 
                     @Override
@@ -312,21 +455,19 @@ public class BookingFragment extends Fragment {
 
     }
 
-
     private void setUpFields() {
 
         //declares spinners
         AppCompatSpinner photoSpinner = view.findViewById(R.id.photoSpinner);
-        AppCompatSpinner otherSpinner = view.findViewById(R.id.otherSpinner);
         AppCompatSpinner inviteesSpinner = view.findViewById(R.id.inviteesSpinner);
-
+        final AppCompatTextView priceText = view.findViewById(R.id.priceText);
         //sets spinners items and their listeners.
-        setSpinnerAdapter(photoSpinner, R.array.photographyOptions, thisBooking, view);
-        setSpinnerAdapter(otherSpinner, R.array.others, thisBooking, view);
-        setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers, thisBooking, view);
+        setSpinnerAdapter(photoSpinner, priceText, R.array.photographyOptions, thisBooking, view);
+        setSpinnerAdapter(inviteesSpinner, priceText, R.array.inviteesNumbers, thisBooking, view);
 
         //declare hospitality text view. add a listener to it.
         final AppCompatTextView hospitalityText = view.findViewById(R.id.hospitalityText);
+        final AppCompatTextView othersText = view.findViewById(R.id.othersText);
 
 
         //add data to booking Object...
@@ -393,34 +534,21 @@ public class BookingFragment extends Fragment {
         hospitalityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHospitalityDialog(thisBooking, hospitalityText, fragment, view);
+                showHospitalityDialog(thisBooking, hospitalityText,
+                        (AppCompatTextView) view.findViewById(R.id.priceText),
+                        fragment, view);
+            }
+        });
+        othersText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOthersDialog(thisBooking, othersText, fragment, view);
             }
         });
         //show a dialog when startTime/endTime views are clicked.
         setListenerTimeDialog(startTime, endTime);
         //checks some fields when clicked and adds data to booking Object.
         submitButton();
-    }
-
-    private void submitButton() {
-        final AppCompatTextView durationText = view.findViewById(R.id.durationText);
-        final AppCompatTextView startTime = view.findViewById(R.id.startTime);
-        final TextInputEditText eventDate = view.findViewById(R.id.eventDate);
-
-        view.findViewById(R.id.eventConfirmButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                thisBooking.setEventDuration(Integer.parseInt(durationText.getText().toString().subSequence(0, 1).toString()));
-                thisBooking.setEventTime(startTime.getText().toString());
-                //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
-                thisBooking.setEventDate(Objects.requireNonNull(eventDate.getText()).toString());
-
-                //calculate price according to whatever data the user provided
-                thisBooking.calculatePrice();
-                //checks if alll fields are ok. if not, shows an error message. Also, it checks if time is valid.
-                submitNow();
-            }
-        });
     }
 
     private void showErrorMessage(String message, final AppCompatTextView textView) {
@@ -470,53 +598,23 @@ public class BookingFragment extends Fragment {
         });
     }
 
-    static void setSpinnerAdapter(final AppCompatSpinner spinner, final int array, final Booking theBooking, View view) {
-        //takes a spinner and an id to array to set up.
+    private void submitButton() {
+        final AppCompatTextView
+                durationText = view.findViewById(R.id.durationText),
+                startTime = view.findViewById(R.id.startTime);
+        final TextInputEditText eventDate = view.findViewById(R.id.eventDate);
 
-        final ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                view.getContext(), //context
-                array, //integer id
-                android.R.layout.simple_spinner_item
-        );
-        final String[] arrayData = view.getContext().getResources().getStringArray(array);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        if (spinner.getId() == R.id.editPhotoSpinner || spinner.getId() == R.id.photoSpinner)
-            spinner.setSelection(Arrays.asList(view.getContext().getResources()
-                    .getStringArray(array)).indexOf(theBooking.getPhotoOptions()));
-
-        if (spinner.getId() == R.id.editOtherSpinner || spinner.getId() == R.id.otherSpinner)
-            spinner.setSelection(Arrays.asList(view.getContext().getResources()
-                    .getStringArray(array)).indexOf(theBooking.getOthers()));
-
-        if (spinner.getId() == R.id.editInviteesSpinner || spinner.getId() == R.id.inviteesSpinner)
-            spinner.setSelection(Arrays.asList(view.getContext().getResources()
-                    .getStringArray(array)).indexOf(String.valueOf(theBooking.getInviteesCount())));
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        view.findViewById(R.id.eventConfirmButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                switch (spinner.getId()) {
-                    case R.id.editPhotoSpinner:
-                    case R.id.photoSpinner:
-                        theBooking.setPhotoOptions(arrayData[pos]);
-                        break;
-                    case R.id.editOtherSpinner:
-                    case R.id.otherSpinner:
-                        theBooking.setOthers(arrayData[pos]);
-                        break;
-                    case R.id.editInviteesSpinner:
-                    case R.id.inviteesSpinner:
-                        theBooking.setInviteesCount(Integer.parseInt(arrayData[pos]));
-                        break;
-                }
-            }
+            public void onClick(View view) {
+                thisBooking.setEventDuration(Integer.parseInt(durationText.getText().toString().subSequence(0, 1).toString()));
+                thisBooking.setEventTime(startTime.getText().toString());
+                //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
+                thisBooking.setEventDate(Objects.requireNonNull(eventDate.getText()).toString());
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //Required empty override
+
+                //checks if all fields are ok. if not, shows an error message. Also, it checks if time is valid.
+                submitNow();
             }
         });
     }

@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    void setLanguage() {
+    private void setLanguage() {
         String langCode = getSharedPreferences("userPrefs", 0).getString("langPref", "");
         if (langCode.isEmpty()) return;
         MainActivity.setLocale(langCode, this);

@@ -31,7 +31,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
-    static void getUserData(Activity activity) {
+    private static void getUserData(Activity activity) {
         final User user = new User();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         getUserData(this);
     }
 
-    void setLanguage() {
+    private void setLanguage() {
         String langCode = getSharedPreferences("userPrefs", 0).getString("langPref", "");
         if (langCode.isEmpty()) return;
         setLocale(langCode, this);

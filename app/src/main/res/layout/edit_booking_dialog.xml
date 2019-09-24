@@ -91,15 +91,12 @@
             android:layout_weight="1"
             android:text="@string/others" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/editOtherSpinner"
-            android:layout_width="match_parent"
-            android:gravity="center_horizontal"
-            android:padding="8dp"
-            android:layout_margin="8dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/editOthersText"
             android:layout_weight="1"
-            android:layout_height="match_parent" />
-
+            style="@style/bookingTextView"
+            android:text="@string/tap_to_choose"
+            android:textSize="13sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

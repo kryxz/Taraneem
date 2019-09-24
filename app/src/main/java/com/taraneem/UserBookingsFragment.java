@@ -89,11 +89,11 @@ public class UserBookingsFragment extends Fragment {
 
     static class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.BookingsRV> {
 
-        private List<String> datesList;
-        private List<String> hallNamesList;
-        private List<String> idsList;
-        private Activity activity;
-        private ContentLoadingProgressBar progressBar;
+        final private List<String> datesList;
+        final private List<String> hallNamesList;
+        final private List<String> idsList;
+        final private Activity activity;
+        final private ContentLoadingProgressBar progressBar;
 
         BookingsAdapter(List<String> datesList, List<String> hallNamesList, List<String>
                 idsList, Activity activity, ContentLoadingProgressBar progressBar) {
@@ -137,31 +137,41 @@ public class UserBookingsFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        String eventDate = datesList.get(position);
-                        String hallName = hallNamesList.get(position);
-                        String id = idsList.get(position);
-                        String bookingType = Objects.requireNonNull(dataSnapshot.child("bookingType").getValue()).toString();
-                        String duration = Objects.requireNonNull(dataSnapshot.child("eventDuration").getValue()).toString();
-                        String time = Objects.requireNonNull(dataSnapshot.child("eventTime").getValue()).toString();
-                        String hospitality = Objects.requireNonNull(dataSnapshot.child("hospitality").getValue()).toString();
-                        String photoOptions = Objects.requireNonNull(dataSnapshot.child("photoOptions").getValue()).toString();
-                        String others = Objects.requireNonNull(dataSnapshot.child("others").getValue()).toString();
-                        String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
-                        String inviteesCount = Objects.requireNonNull(dataSnapshot.child("inviteesCount").getValue()).toString();
-                        Booking thisBooking = new Booking();
-                        thisBooking.setId(id);
-                        thisBooking.setHospitality(hospitality);
-                        thisBooking.setBookingType(bookingType);
-                        thisBooking.setEventDate(eventDate);
-                        thisBooking.setHallName(hallName);
-                        thisBooking.setEventDuration(Integer.parseInt(duration));
-                        thisBooking.setEventTime(time);
-                        thisBooking.setPhotoOptions(photoOptions);
-                        thisBooking.setOthers(others);
-                        thisBooking.setPrice(Integer.parseInt(price));
-                        thisBooking.setInviteesCount(Integer.parseInt(inviteesCount));
-                        TempData.setCurrentBooking(thisBooking);
-                        Navigation.findNavController(view).navigate(R.id.changeBookingInfo);
+                        final String eventDate = datesList.get(position);
+                        final String hallName = hallNamesList.get(position);
+                        final String id = idsList.get(position);
+                        final String bookingType = Objects.requireNonNull(dataSnapshot.child("bookingType").getValue()).toString();
+                        final String duration = Objects.requireNonNull(dataSnapshot.child("eventDuration").getValue()).toString();
+                        final String time = Objects.requireNonNull(dataSnapshot.child("eventTime").getValue()).toString();
+                        final String hospitality = Objects.requireNonNull(dataSnapshot.child("hospitality").getValue()).toString();
+                        final String photoOptions = Objects.requireNonNull(dataSnapshot.child("photoOptions").getValue()).toString();
+                        final String others = Objects.requireNonNull(dataSnapshot.child("others").getValue()).toString();
+                        final String inviteesCount = Objects.requireNonNull(dataSnapshot.child("inviteesCount").getValue()).toString();
+                        FirebaseDatabase.getInstance().getReference().child("Halls").child(hallName).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int cost = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("cost").getValue()).toString());
+                                Booking thisBooking = new Booking();
+                                thisBooking.setId(id);
+                                thisBooking.setRes(view.getContext().getResources()); //res is needed to calculate the final price!
+                                thisBooking.setHospitality(hospitality);
+                                thisBooking.setBookingType(bookingType);
+                                thisBooking.setEventDate(eventDate);
+                                thisBooking.setHallName(hallName, cost);
+                                thisBooking.setEventDuration(Integer.parseInt(duration));
+                                thisBooking.setEventTime(time);
+                                thisBooking.setPhotoOptions(photoOptions);
+                                thisBooking.setOthers(others);
+                                thisBooking.setInviteesCount(Integer.parseInt(inviteesCount));
+                                TempData.setCurrentBooking(thisBooking);
+                                Navigation.findNavController(view).navigate(R.id.changeBookingInfo);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+
 
                     }
                 }

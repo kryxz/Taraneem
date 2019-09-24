@@ -1,0 +1,47 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSilver"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmOthers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:background="@color/colorWhite"
+        android:text="@string/confirm"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/particularEventCheck"
+        style="@style/checkBoxStyle"
+        android:text="@string/particular_event" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/customCheck"
+        style="@style/checkBoxStyle"
+        android:text="@string/customize" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/surpriseCheck"
+        style="@style/checkBoxStyle"
+        android:text="@string/surprise" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/others"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

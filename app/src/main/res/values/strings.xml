@@ -22,13 +22,17 @@
 
 
     <string name="bookings">Bookings</string>
+    <string name="shortPassword">Password too short</string>
+    <string name="dontMatchPassword">Passwords don\'t match</string>
+    <string name="invalidNumber">Invalid Phone Number</string>
+    <string name="invalidDate">Invalid Date</string>
+    <string name="invalidName">Invalid Name</string>
 
 
     <string name="wedding_date">Date of Wedding</string>
     <string name="wedding_time">Time of Wedding</string>
     <string name="wedding_duration">Duration of Wedding</string>
 
-    <string name="party_date">Date of Party</string>
     <string name="party_time">Time of Party</string>
 
     <string name="graduationParty_duration">Duration of Graduation Party</string>
@@ -54,7 +58,9 @@
 
     <string name="number_hour">%01d Hours</string>
 
-    <string name="total_price">Total Price:</string>
+    <string name="total_price">
+        Total Price: %01d
+    </string>
     <string name="submit">Submit</string>
 
     <string name="timeFormat">%1$02d:%2$02d</string>
@@ -126,9 +132,7 @@
         Others:
         \n %7$s\n
         Invitees Count:
-        \n %8$s\n
-        Total Price:
-        \n %9$s
+        \n %8$s
     </string>
 
     <string name="profileData">
@@ -139,7 +143,7 @@
         Phone Number:
         \n %3$s\n\n
         Email:
-        \n %4$s\n\n
+        \n %4$s\n
     </string>
     <string name="invalid_time">Invalid time or duration</string>
     <string name="choose_language">Choose Language\nاختر اللغة</string>
@@ -160,8 +164,12 @@
     <string name="aboutApp">This app is made by Taraneem team. That\'s all.</string>
     <string name="about">About</string>
     <string name="changeLanguage">Change Language</string>
+    <string name="surprise">Surprise</string>
+    <string name="particular_event">Particular Event</string>
+    <string name="customize">Customize</string>
 
-
+    <string name="cannotBook">Hall isn\'t available at the specified time and date!</string>
+    <string name="cannotBookTitle">Cannot Book</string>
     <string-array name="photographyOptions">
         <item>Standard</item>
         <item>Extra</item>

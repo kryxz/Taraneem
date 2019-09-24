@@ -189,21 +189,22 @@ public class RegisterFragment extends Fragment {
 
         //Checking if fields are ok
         if (name.isEmpty()) {
-            nameED.setError("Invalid name");
+            nameED.setError(getString(R.string.invalidName));
             return null;
         }
 
         if (birthday.isEmpty()) {
-            birthDateEd.setError("Invalid date");
+            birthDateEd.setError(getString(R.string.invalidDate));
             return null;
         }
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEd.setError("Invalid Email");
+            emailEd.setError(getString(R.string.invalidEmail));
             return null;
         }
 
-        if (phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()) {
-            phoneEd.setError("Invalid Phone Number");
+        if (phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()
+                || phone.length() != 10) {
+            phoneEd.setError(getString(R.string.invalidNumber));
             return null;
         }
         if (!male.isChecked() && !female.isChecked()) {
@@ -212,18 +213,18 @@ public class RegisterFragment extends Fragment {
         }
         if (password.isEmpty() ||
                 password.length() < 6) {
-            passwordEd.setError("Password too short");
+            passwordEd.setError(getString(R.string.shortPassword));
             return null;
         }
 
         if (passwordConfirm.isEmpty()) {
-            passwordConfirmEd.setError("Confirm password");
+            passwordConfirmEd.setError(getString(R.string.confirm_password));
             return null;
         }
 
         if (!password.equals(passwordConfirm)) {
-            passwordEd.setError("Passwords don't match");
-            passwordConfirmEd.setError("Passwords don't match");
+            passwordEd.setError(getString(R.string.dontMatchPassword));
+            passwordConfirmEd.setError(getString(R.string.dontMatchPassword));
             return null;
         }
 

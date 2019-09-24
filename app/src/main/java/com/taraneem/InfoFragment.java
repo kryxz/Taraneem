@@ -36,7 +36,7 @@ public class InfoFragment extends Fragment {
     private View view; //instead of using getView(). This makes things better.
 
     private Booking booking;
-    private Fragment fragment = this;
+    final private Fragment fragment = this;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -88,10 +88,12 @@ public class InfoFragment extends Fragment {
         ((AppCompatTextView) (view.findViewById(R.id.bookingInfo))).setText(getString(R.string.bookingInfoFull,
                 bookingChoice, booking.getEventDate(), booking.getEventTime(), bookingDuration,
                 booking.getPhotoOptions(), booking.getHospitality(),
-                booking.getOthers(), String.valueOf(booking.getInviteesCount()), String.valueOf(booking.getPrice())));
+                booking.getOthers(), String.valueOf(booking.getInviteesCount())));
 
         ((AppCompatTextView) (view.findViewById(R.id.bookingDone))).setText(getString(R.string.bookingDone, booking.getHallName()));
-
+        ((AppCompatTextView) (view.findViewById(R.id.infoPriceText))).setText(
+                getString(R.string.total_price, booking.getPrice())
+        );
         //get hall data from fire base.
         final HashMap<String, String> hall = new HashMap<>();
         FirebaseDatabase.getInstance().getReference().child("Halls")
@@ -187,19 +189,31 @@ public class InfoFragment extends Fragment {
         final AlertDialog dialog = builder.create();
         dialog.show();
 
-        AppCompatSpinner photoSpinner = layout.findViewById(R.id.editPhotoSpinner);
-        AppCompatSpinner otherSpinner = layout.findViewById(R.id.editOtherSpinner);
-        AppCompatSpinner inviteesSpinner = layout.findViewById(R.id.editInviteesSpinner);
-        final AppCompatTextView editHospitalityText = layout.findViewById(R.id.editHospitalityText);
+        AppCompatSpinner
+                photoSpinner = layout.findViewById(R.id.editPhotoSpinner),
+                inviteesSpinner = layout.findViewById(R.id.editInviteesSpinner);
+
+        final AppCompatTextView
+                editHospitalityText = layout.findViewById(R.id.editHospitalityText),
+                editOthersText = layout.findViewById(R.id.editOthersText),
+                //view because this is from the fragment!
+                infoPriceText = view.findViewById(R.id.infoPriceText);
 
         editHospitalityText.setText(booking.getHospitality());
-        BookingFragment.setSpinnerAdapter(photoSpinner, R.array.photographyOptions, booking, view);
-        BookingFragment.setSpinnerAdapter(otherSpinner, R.array.others, booking, view);
-        BookingFragment.setSpinnerAdapter(inviteesSpinner, R.array.inviteesNumbers, booking, view);
+        editOthersText.setText(booking.getOthers());
+        booking.setRes(view.getContext().getResources()); //res is needed to calculate the final price!
+        BookingFragment.setSpinnerAdapter(photoSpinner, infoPriceText, R.array.photographyOptions, booking, view);
+        BookingFragment.setSpinnerAdapter(inviteesSpinner, infoPriceText, R.array.inviteesNumbers, booking, view);
         editHospitalityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BookingFragment.showHospitalityDialog(booking, editHospitalityText, fragment, view);
+                BookingFragment.showHospitalityDialog(booking, editHospitalityText, infoPriceText, fragment, view);
+            }
+        });
+        editOthersText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BookingFragment.showOthersDialog(booking, editOthersText, fragment, view);
             }
         });
         layout.findViewById(R.id.confirmBookingEdit).setOnClickListener(new View.OnClickListener() {
