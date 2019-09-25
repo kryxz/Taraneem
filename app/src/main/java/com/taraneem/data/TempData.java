@@ -1,5 +1,8 @@
 package com.taraneem.data;
+
 import android.app.Application;
+
+import java.util.HashMap;
 
 
 //We'll handle all application-global data here.
@@ -13,11 +16,13 @@ public class TempData extends Application {
         return userData;
     }
 
-
     public static void setUserData(User userData) {
         TempData.userData = userData;
     }
 
+    public static void removeBookings() {
+        userData.setBookings(new HashMap<String, String>());
+    }
 
     public static Booking getCurrentBooking() {
         return currentBooking;

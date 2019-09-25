@@ -60,6 +60,19 @@
                 android:textColor="@color/colorPrimaryDark" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/button_white"
+                android:drawableEnd="@drawable/ic_cancel"
+                android:drawablePadding="8dp"
+                android:text="@string/cancelBooking"
+                android:textColor="@color/colorRed"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:id="@+id/editButton"
                 android:layout_height="wrap_content"

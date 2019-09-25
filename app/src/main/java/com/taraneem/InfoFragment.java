@@ -36,10 +36,10 @@ import static com.taraneem.Common.getEventPath;
 
 public class InfoFragment extends Fragment {
 
+    final private Fragment fragment = this; //passed as a parameter to show dialogs!
     private View view; //instead of using getView(). This makes things better.
-
-    private Booking booking;
-    final private Fragment fragment = this;
+    private Booking booking; //holds user booking data
+    private boolean isConfirmed; //needed to remove event from database if it's not confirmed!
 
     public InfoFragment() {
         // Required empty public constructor
@@ -60,7 +60,17 @@ public class InfoFragment extends Fragment {
         view = v;
         booking = TempData.getCurrentBooking(); //get booking data from TempData.
         setFields();
+        cancelButton();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        //if user quit this fragment without pressing the done button.
+        // Event will be removed from the database
+        if (!isConfirmed)
+            removeEvent();
+        super.onDestroyView();
     }
 
 
@@ -133,6 +143,7 @@ public class InfoFragment extends Fragment {
         view.findViewById(R.id.doneButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                isConfirmed = true;
                 updateBookingData(v);
             }
         });
@@ -150,6 +161,27 @@ public class InfoFragment extends Fragment {
         return string.substring(0, string.lastIndexOf('-') + 3);
     }
 
+    private void removeEvent() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        String userID = view.getContext().getSharedPreferences("userPrefs", 0)
+                .getString("userID", "");
+        //delete from user node
+        ref.child("Users")
+                .child(userID).child("bookings").child(booking.getId()).removeValue();
+        //delete from hall node
+        ref.child(booking.getHallName()).child(booking.yearOfDate())
+                .child(booking.monthOfDate()).child(booking.dayOfDate()).removeValue();
+    }
+
+    private void cancelButton() {
+        view.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeEvent();
+                Navigation.findNavController(v).navigate(R.id.infoToMain);
+            }
+        });
+    }
 
     private void updateBookingData(final View v) {
         String userID = Objects.requireNonNull(getContext()).getSharedPreferences("userPrefs", 0).getString("userID", "");

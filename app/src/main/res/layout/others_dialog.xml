@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confirmOthers"
         android:layout_width="match_parent"
@@ -43,5 +44,4 @@
         android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold" />
-
 </androidx.appcompat.widget.LinearLayoutCompat>

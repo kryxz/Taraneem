@@ -85,12 +85,12 @@ class Common {
         //String is immutable(creates a new object when changed)
         //StringBuilder is mutable
         final StringBuilder others = new StringBuilder();
-        final String currentHospitality = theBooking.getHospitality();
+        final String userOthers = theBooking.getOthers();
 
         //check if field already contains a specific string. Check box accordingly.
-        surpriseCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.surprise)));
-        particularEventCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.particular_event)));
-        customCheck.setChecked(currentHospitality.contains(view.getContext().getString(R.string.customize)));
+        surpriseCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.surprise)));
+        particularEventCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.particular_event)));
+        customCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.customize)));
 
         //confirm button listener
         confirmOthers.setOnClickListener(new View.OnClickListener() {

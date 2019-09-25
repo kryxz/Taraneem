@@ -9,12 +9,16 @@ public class User {
     //bookings used in the recycler view. Stores the booking id, hall etc.
     private HashMap<String, String> bookings;
 
-    public void setBookings(HashMap<String, String> bookings) {
-        this.bookings = bookings;
+    //empty constructor that can be used to initialize a User object.
+    public User() {
     }
 
     public HashMap<String, String> getBookings() {
         return bookings;
+    }
+
+    public void setBookings(HashMap<String, String> bookings) {
+        this.bookings = bookings;
     }
 
     //if Male checkbox in Register fragment is checked, then user is male.
@@ -27,14 +31,13 @@ public class User {
         this.gender = gender;
     }
 
-
-    //empty constructor that can be used to initialize a User object.
-    public User() {
-    }
-
     //FireBase requires to have public variables or getter/setter.
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {
@@ -44,11 +47,6 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
     public String getDob() {
         return dob.substring(0, dob.lastIndexOf('-') + 3);

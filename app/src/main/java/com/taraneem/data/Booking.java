@@ -73,19 +73,13 @@ public class Booking {
             price = 1000;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getId() {
         return id;
     }
 
-    //booking types. default equals null
-    public enum BookingType {
-        Default, Wedding, Birthday, Graduation, Store
+    public void setId(String id) {
+        this.id = id;
     }
-
 
     //checks if all entered data are valid.
     public boolean allFieldsOK() {
@@ -95,7 +89,6 @@ public class Booking {
                 !others.isEmpty() && !hospitality.isEmpty() &&
                 !photoOptions.isEmpty() && inviteesCount != 0;
     }
-
 
     public String getBookingType() {
         return bookingType;
@@ -139,7 +132,6 @@ public class Booking {
         setPrice();
     }
 
-
     public String getOthers() {
         return others;
     }
@@ -178,6 +170,11 @@ public class Booking {
     public void setPhotoOptions(String photoOptions) {
         this.photoOptions = photoOptions;
         setPrice();
+    }
+
+    //booking types. default equals null
+    public enum BookingType {
+        Default, Wedding, Birthday, Graduation, Store
     }
 }
 

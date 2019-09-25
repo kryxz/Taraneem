@@ -100,7 +100,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     private void buttonListeners() {
         final AppCompatEditText passwordEd = view.findViewById(R.id.loginPasswordTV);
         final AppCompatEditText emailEd = view.findViewById(R.id.loginEmailTV);

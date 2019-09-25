@@ -72,39 +72,10 @@ public class SettingsFragment extends Fragment {
         final private List<SettingsItem> list;
         final private Activity activity;
 
-        static class SettingsRV extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            final LinearLayoutCompat layoutView;
-            final AppCompatTextView textView;
-
-            SettingsRV(LinearLayoutCompat v) {
-                super(v);
-                layoutView = v;
-                textView = layoutView.findViewById(R.id.itemTextView);
-            }
-        }
-
-
-        static class SettingsItem {
-            final private int icon;
-            final private String title;
-            final private Option option;
-
-            SettingsItem(Option whichOption, int theIcon, String text) {
-                option = whichOption;
-                icon = theIcon;
-                title = text;
-            }
-
-
-        }
-
-
         SettingsAdapter(List<SettingsItem> stringList, Activity theActivity) {
             list = stringList;
             activity = theActivity;
         }
-
 
         @NonNull
         @Override
@@ -114,7 +85,6 @@ public class SettingsFragment extends Fragment {
 
             return new SettingsRV(v);
         }
-
 
         @Override
         public void onBindViewHolder(@NonNull SettingsRV holder, final int position) {
@@ -171,13 +141,9 @@ public class SettingsFragment extends Fragment {
             activity.finish();
         }
 
-
-
-
         private String getString(int id) {
             return activity.getString(id);
         }
-
 
         //goto Bookings fragment if user has made any bookings.
         void viewBookings(View view) {
@@ -189,18 +155,15 @@ public class SettingsFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.userBookingsFragment);
         }
 
-
         //Goto Profile fragment.
         void goToProfile(View view) {
             Navigation.findNavController(view).navigate(R.id.profileFragment);
         }
 
-
         //show some info
         void aboutApp(View view) {
             Common.viewInfoDialog(getString(R.string.aboutApp), getString(R.string.about), view);
         }
-
 
         @Override
         public int getItemCount() {
@@ -210,6 +173,32 @@ public class SettingsFragment extends Fragment {
 
         enum Option {
             Logout, Bookings, Profile, PrivacyPolicy, About, Language
+        }
+
+        static class SettingsRV extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            final LinearLayoutCompat layoutView;
+            final AppCompatTextView textView;
+
+            SettingsRV(LinearLayoutCompat v) {
+                super(v);
+                layoutView = v;
+                textView = layoutView.findViewById(R.id.itemTextView);
+            }
+        }
+
+        static class SettingsItem {
+            final private int icon;
+            final private String title;
+            final private Option option;
+
+            SettingsItem(Option whichOption, int theIcon, String text) {
+                option = whichOption;
+                icon = theIcon;
+                title = text;
+            }
+
+
         }
 
     }

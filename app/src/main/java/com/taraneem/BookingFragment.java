@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,6 @@ public class BookingFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,7 +93,8 @@ public class BookingFragment extends Fragment {
                     boolean isTaken = true;
                     if (!dataSnapshot.exists() || !dataSnapshot.hasChildren())
                         sendBookingData(databaseReference);
-                    else
+                    else //iterate through events until there is a conflicting event.
+                        //if not conflicting event is found, user can safely book.
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             isTaken = true; //Assume this time is taken, for now.
 
@@ -116,29 +115,17 @@ public class BookingFragment extends Fragment {
                             float newTime = newHours + (float) newMinutes / 60;
                             float newEndTime = thisBooking.getEventDuration() + newHours + (float) newMinutes / 60;
 
-                            Log.i("BookingNow", "theTime: " + theTime);
-                            Log.i("BookingNow", "endTime: " + endTime);
-                            Log.i("BookingNow", "newTime: " + newTime);
-                            Log.i("BookingNow", "newEndTime: " + newEndTime);
                             if ((newTime < endTime && newTime >= theTime)
                                     || (newTime < endTime && newTime >= theTime - 1)
                                     || (newEndTime <= endTime && newEndTime > theTime)) {
-                                Log.i("BookingNow", "Floating... We're in range! Don't Book!");
-                                Log.i("BookingNow", Objects.requireNonNull(ds.getKey()));
-                                Log.i("BookingNow", "Existing event starts at " + hours + ":" + minutes
-                                        + " and ends at " + endHours + ":" + endMinutes);
                                 viewInfoDialog(getString(R.string.cannotBook), getString(R.string.cannotBookTitle), view);
                                 break;
                             }
-                            Log.i("BookingNow", "Not in Range");
-                            Log.i("BookingNow", "-------------------------");
-                            isTaken = false; //time is free. User can Book!
+                            isTaken = false; //time is ok. user can book!
 
                         }
-                    if (!isTaken) {
+                    if (!isTaken)
                         sendBookingData(databaseReference);
-                        Log.i("BookingNow", "We gotcha. Booking Now!");
-                    }
                 }
 
                 @Override
@@ -185,7 +172,6 @@ public class BookingFragment extends Fragment {
             map.put(dataSnapshot.getKey(), Objects.requireNonNull(dataSnapshot.getValue()).toString());
         return map;
     }
-
 
 
     private void textWatch() {
@@ -286,7 +272,6 @@ public class BookingFragment extends Fragment {
         });
 
     }
-
 
 
     private void setUpFields() {
@@ -402,7 +387,6 @@ public class BookingFragment extends Fragment {
         }, 1000);
 
     }
-
 
 
     private void setListenerTimeDialog(final AppCompatTextView textStart, final AppCompatTextView textEnd) {

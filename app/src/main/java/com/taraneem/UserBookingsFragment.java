@@ -55,36 +55,46 @@ public class UserBookingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         this.view = v;
-        setUpAdapter();
+        setUpAdapter(); //initialize recyclerView adapter!
         super.onViewCreated(view, savedInstanceState);
     }
 
 
     private void setUpAdapter() {
-        if (TempData.getUserData() == null) {
+        if (TempData.getUserData() == null) { //no booking history => go back.
             Navigation.findNavController(view).navigateUp();
             return;
         }
+        //define recyclerView
         RecyclerView recyclerView = view.findViewById(R.id.bookingsRV);
 
-        RecyclerView.Adapter adapter = createAdapter();
-        recyclerView.setAdapter(adapter);
+        //add adapter to recyclerView
+        recyclerView.setAdapter(createAdapter());
+        //add layoutManager to recyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 
 
     private BookingsAdapter createAdapter() {
+        //collects required data to and returns a BookingAdapter.
+
+        //user bookings
         HashMap<String, String> map = TempData.getUserData().getBookings();
+
         List<String> hallNamesList = new ArrayList<>();
         List<String> datesList = new ArrayList<>();
 
+        //the keys in the user bookings maps represent the ids of the bookings.
         List<String> idsList = new ArrayList<>(map.keySet());
-
+        //iterate through the map to get names and dates.
         for (String string : map.values())
             hallNamesList.add(string.substring(string.indexOf("'") + 1));
+
         for (String string : map.values())
             datesList.add(string.substring(0, string.indexOf("'")));
+
+        //progress bar is required in the BookingsAdapter constructor!
         ContentLoadingProgressBar progressBar = view.findViewById(R.id.infoProgressBar);
         return new BookingsAdapter(datesList, hallNamesList, idsList, getActivity(), progressBar);
 
@@ -93,12 +103,16 @@ public class UserBookingsFragment extends Fragment {
 
     static class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.BookingsRV> {
 
+        //lists that hold the user booking data. Date, hall name, and id.
         final private List<String> datesList;
         final private List<String> hallNamesList;
         final private List<String> idsList;
-        final private Activity activity;
+
+
+        final private Activity activity; //required to show a dialog, and to get sharedPreferences
         final private ContentLoadingProgressBar progressBar;
 
+        //constructor
         BookingsAdapter(List<String> datesList, List<String> hallNamesList, List<String>
                 idsList, Activity activity, ContentLoadingProgressBar progressBar) {
             this.datesList = datesList;
@@ -108,14 +122,15 @@ public class UserBookingsFragment extends Fragment {
             this.progressBar = progressBar;
         }
 
+        //display the data at the specified position.
         @Override
-        public void onBindViewHolder(@NonNull BookingsRV holder, final int position) {
+        public void onBindViewHolder(@NonNull final BookingsRV holder, final int position) {
             holder.textView.setText(activity.getString(R.string.bookingItemInfo, datesList.get(position), hallNamesList.get(position)));
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     deleteEvent(Common.getEventPath(datesList.get(position),
-                            idsList.get(position), hallNamesList.get(position)), position);
+                            idsList.get(position), hallNamesList.get(position)), position, view);
                 }
             });
             holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +143,7 @@ public class UserBookingsFragment extends Fragment {
 
         }
 
-
+        //create viewHolder to represent the items.
         @NonNull
         @Override
         public BookingsRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -136,13 +151,14 @@ public class UserBookingsFragment extends Fragment {
                     .inflate(R.layout.booking_item, parent, false));
         }
 
-
+        //edit booking data. This gets the data from the database and sends the user to another fragment!
         void editEvent(final DatabaseReference reference, final int position, final View view) {
             progressBar.setVisibility(View.VISIBLE);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
+                        //getting booking data here
                         final String eventDate = datesList.get(position);
                         final String hallName = hallNamesList.get(position);
                         final String id = idsList.get(position);
@@ -156,7 +172,10 @@ public class UserBookingsFragment extends Fragment {
                         FirebaseDatabase.getInstance().getReference().child("Halls").child(hallName).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //get hall cost
                                 int cost = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("cost").getValue()).toString());
+
+                                //create a new booking object, add the data to it.
                                 Booking thisBooking = new Booking();
                                 thisBooking.setId(id);
                                 thisBooking.setRes(view.getContext().getResources()); //res is needed to calculate the final price!
@@ -169,7 +188,9 @@ public class UserBookingsFragment extends Fragment {
                                 thisBooking.setPhotoOptions(photoOptions);
                                 thisBooking.setOthers(others);
                                 thisBooking.setInviteesCount(Integer.parseInt(inviteesCount));
+                                //set it to be the current booking object.
                                 TempData.setCurrentBooking(thisBooking);
+                                //go to editing page (Info Fragment, that is).
                                 Navigation.findNavController(view).navigate(R.id.changeBookingInfo);
                             }
 
@@ -189,37 +210,34 @@ public class UserBookingsFragment extends Fragment {
             });
         }
 
-
-        static class BookingsRV extends RecyclerView.ViewHolder {
-            final LinearLayoutCompat layoutView;
-            final AppCompatTextView textView;
-            final AppCompatButton delete;
-            final AppCompatButton edit;
-
-            BookingsRV(LinearLayoutCompat v) {
-                super(v);
-                layoutView = v;
-                textView = layoutView.findViewById(R.id.itemInfo);
-                delete = layoutView.findViewById(R.id.deleteItemButton);
-                edit = layoutView.findViewById(R.id.editItemButton);
+        private void updateItems(final int position, View view) {
+            //notifies the adapter about the deleted item...
+            hallNamesList.remove(position);
+            idsList.remove(position);
+            datesList.remove(position);
+            if (datesList.isEmpty()) {
+                Navigation.findNavController(view).navigateUp();
+                TempData.removeBookings();
             }
+            notifyDataSetChanged();
+            notifyItemRangeChanged(position, datesList.size());
         }
 
-
-        private void deleteEvent(final DatabaseReference reference, final int position) {
+        private void deleteEvent(final DatabaseReference reference, final int position, final View view) {
             //Dialog buttons listener
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
-
+                        //yes
                         case DialogInterface.BUTTON_POSITIVE:
                             reference.removeValue();
                             String userID = activity.getSharedPreferences("userPrefs", 0).getString("userID", "");
                             FirebaseDatabase.getInstance().getReference().child("Users")
                                     .child(userID).child("bookings").child(idsList.get(position)).removeValue();
+                            updateItems(position, view);
                             break;
-
+                        //no
                         case DialogInterface.BUTTON_NEGATIVE:
                             dialog.dismiss();
                             break;
@@ -237,9 +255,30 @@ public class UserBookingsFragment extends Fragment {
 
         }
 
+        //how many items in the recyclerView
         @Override
         public int getItemCount() {
             return idsList.size();
         }
+
+        //View holder class to represent the items.
+        static class BookingsRV extends RecyclerView.ViewHolder {
+
+            final LinearLayoutCompat layoutView;
+            final AppCompatTextView textView;
+            final AppCompatButton delete;
+            final AppCompatButton edit;
+
+            BookingsRV(LinearLayoutCompat v) {
+                super(v);
+                //init values
+                layoutView = v;
+                textView = layoutView.findViewById(R.id.itemInfo);
+                delete = layoutView.findViewById(R.id.deleteItemButton);
+                edit = layoutView.findViewById(R.id.editItemButton);
+            }
+        }
     }
+
+
 }

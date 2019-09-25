@@ -29,37 +29,6 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setTheme(R.style.MainTheme);
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-        setLanguage();
-
-        setContentView(R.layout.activity_main);
-        FirebaseApp.initializeApp(this);
-        navController = Navigation.findNavController(this, R.id.fragment_host);
-        NavigationUI.setupActionBarWithNavController(this, navController);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        Set<Integer> set = new HashSet<>();
-        //Fragments without back/up button
-        set.add(R.id.mainFragment);
-        set.add(R.id.settingsFragment);
-        set.add(R.id.infoFragment);
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(set).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        getUserData(this);
-    }
-
-
     private static void getUserData(Activity activity) {
         final User user = new User();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
@@ -92,6 +61,35 @@ public class MainActivity extends AppCompatActivity {
                 //empty override.
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(R.style.MainTheme);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+        setLanguage();
+
+        setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
+        navController = Navigation.findNavController(this, R.id.fragment_host);
+        NavigationUI.setupActionBarWithNavController(this, navController);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        Set<Integer> set = new HashSet<>();
+        //Fragments without back/up button
+        set.add(R.id.mainFragment);
+        set.add(R.id.settingsFragment);
+        set.add(R.id.infoFragment);
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(set).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        getUserData(this);
     }
 
     private void setLanguage() {
