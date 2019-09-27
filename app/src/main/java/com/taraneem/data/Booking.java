@@ -15,6 +15,7 @@ public class Booking {
     private String id; //used to identify booking
     private String eventDate, eventTime, hallName,
             others, hospitality, photoOptions, bookingType;
+
     private int eventDuration, inviteesCount, price, hallCost;
 
     //empty constructor
@@ -63,6 +64,7 @@ public class Booking {
             hospitalityCost += 1;
         if (hospitality.contains(res.getString(R.string.knafeh)))
             hospitalityCost += 1;
+
         price = 400 + inviteesCost * 50 +
                 hallCost * 50 + photographyCost * 50 + hospitalityCost * 50;
 

@@ -88,11 +88,11 @@ public class LoginFragment extends Fragment {
                     }
                     editor.apply();
                     Activity activity = getActivity();
-                    TaskStackBuilder.create(activity)
+                    TaskStackBuilder.create(activity)//transition animation
                             .addNextIntent(new Intent(activity, LoginActivity.class))
                             .startActivities();
-                    assert activity != null;
-                    activity.finish();
+                    if (activity != null)
+                        activity.finish();
                 }
             });
         }
@@ -116,12 +116,12 @@ public class LoginFragment extends Fragment {
                     return;
 
                 if (passwordEd.getText().length() < 6) {
-                    passwordEd.setError("Password too short");
+                    passwordEd.setError(getString(R.string.shortPassword));
                     return;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailEd.getText().toString()).matches()) {
-                    emailEd.setError("Invalid Email");
+                    emailEd.setError(getString(R.string.invalidEmail));
                     return;
                 }
                 showHideProgressBar(true);

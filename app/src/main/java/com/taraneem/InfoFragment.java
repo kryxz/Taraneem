@@ -170,7 +170,7 @@ public class InfoFragment extends Fragment {
                 .child(userID).child("bookings").child(booking.getId()).removeValue();
         //delete from hall node
         ref.child(booking.getHallName()).child(booking.yearOfDate())
-                .child(booking.monthOfDate()).child(booking.dayOfDate()).removeValue();
+                .child(booking.monthOfDate()).child(booking.dayOfDate()).child(booking.getId()).removeValue();
     }
 
     private void cancelButton() {

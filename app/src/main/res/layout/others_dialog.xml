@@ -5,18 +5,17 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/confirmOthers"
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_weight="1"
-        android:background="@color/colorWhite"
-        android:text="@string/confirm"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/others"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold" />
+
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/particularEventCheck"
@@ -34,14 +33,17 @@
         android:text="@string/surprise" />
 
 
-    <androidx.appcompat.widget.AppCompatTextView
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmOthers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center_horizontal"
-        android:padding="8dp"
-        android:text="@string/others"
-        android:textColor="@color/colorBlack"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:background="@color/colorWhite"
+        android:text="@string/confirm"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:textStyle="bold" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

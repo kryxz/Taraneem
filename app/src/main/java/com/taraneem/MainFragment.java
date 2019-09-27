@@ -17,8 +17,8 @@ import androidx.navigation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 import com.taraneem.data.Booking;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainFragment extends Fragment {
@@ -63,13 +63,14 @@ public class MainFragment extends Fragment {
 
 
     private void showInfoDialog() {
-        String message = getString(R.string.mainInfoMessage), title = getString(R.string.mainInfoTitle);
+        String message = getString(R.string.mainInfoMessage),
+                title = getString(R.string.mainInfoTitle);
         Common.viewInfoDialog(message, title, view);
     }
 
 
     private void cardViewListener() {
-        Set<MaterialCardView> cardViews = new HashSet<>();
+        List<MaterialCardView> cardViews = new ArrayList<>();
         cardViews.add((MaterialCardView) (view.findViewById(R.id.weddingCv)));
         cardViews.add((MaterialCardView) (view.findViewById(R.id.birthdayCv)));
         cardViews.add((MaterialCardView) (view.findViewById(R.id.graduationCv)));

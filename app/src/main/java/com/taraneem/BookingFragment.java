@@ -79,6 +79,7 @@ public class BookingFragment extends Fragment {
         getData(); //gets data from previous fragment. Determines Wedding/Birthday etc..
         setUpFields(); //sets some texts. Initializes spinners and their listeners. Adds a listener to other views(Duration text, submit button, etc).
         textWatch();
+        submitButton();
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -114,7 +115,7 @@ public class BookingFragment extends Fragment {
                             float endTime = endHours + (float) endMinutes / 60;
                             float newTime = newHours + (float) newMinutes / 60;
                             float newEndTime = thisBooking.getEventDuration() + newHours + (float) newMinutes / 60;
-
+                            
                             if ((newTime < endTime && newTime >= theTime)
                                     || (newTime < endTime && newTime >= theTime - 1)
                                     || (newEndTime <= endTime && newEndTime > theTime)) {
@@ -192,7 +193,7 @@ public class BookingFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     //text is changed, update price accordingly!l
-                    updatePriceText((AppCompatTextView) view.findViewById(R.id.priceText), thisBooking);
+                    updatePriceText((AppCompatTextView) view.findViewById(R.id.priceText), thisBooking.getPrice());
                 }
 
                 @Override
@@ -207,13 +208,14 @@ public class BookingFragment extends Fragment {
         //get data from FireBase and set up the halls spinner
 
         //declaring variables
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(); //to reach database.
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Halls"); //to reach database.
         final AppCompatSpinner hallSpinner = view.findViewById(R.id.hallSpinner); //set the adapter to this spinner.
         final ArrayList<String> hallsList = new ArrayList<>(); //put names in this list.
+
         final ArrayList<HashMap<String, String>> halls = new ArrayList<>(); //put all data in this list, to access it later on.
 
         //SingleValueEvent so we won't keep listening for changes in the database.
-        databaseReference.child("Halls").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -244,7 +246,7 @@ public class BookingFragment extends Fragment {
 
                         //Hall name as a title of the dialog.
                         String title = halls.get(hallSpinner.getSelectedItemPosition()).get("name");
-                        viewInfoDialog(infoMessage, title, view);
+                        Common.viewInfoDialog(infoMessage, title, view);
                     }
                 });
                 //halls spinner listener.
@@ -254,7 +256,7 @@ public class BookingFragment extends Fragment {
                         //adds selected item to booking data.
                         thisBooking.setHallName(hallsList.get(i),
                                 Integer.parseInt(Objects.requireNonNull(halls.get(i).get("cost"))));
-                        updatePriceText((AppCompatTextView) (view.findViewById(R.id.priceText)), thisBooking);
+                        updatePriceText((AppCompatTextView) (view.findViewById(R.id.priceText)), thisBooking.getPrice());
                     }
 
                     @Override
@@ -277,8 +279,8 @@ public class BookingFragment extends Fragment {
     private void setUpFields() {
 
         //declares spinners
-        AppCompatSpinner photoSpinner = view.findViewById(R.id.photoSpinner);
-        AppCompatSpinner inviteesSpinner = view.findViewById(R.id.inviteesSpinner);
+        final AppCompatSpinner photoSpinner = view.findViewById(R.id.photoSpinner);
+        final AppCompatSpinner inviteesSpinner = view.findViewById(R.id.inviteesSpinner);
         final AppCompatTextView priceText = view.findViewById(R.id.priceText);
         //sets spinners items and their listeners.
         setSpinnerAdapter(photoSpinner, priceText, R.array.photographyOptions, thisBooking, view);
@@ -367,7 +369,6 @@ public class BookingFragment extends Fragment {
         //show a dialog when startTime/endTime views are clicked.
         setListenerTimeDialog(startTime, endTime);
         //checks some fields when clicked and adds data to booking Object.
-        submitButton();
     }
 
 
@@ -417,7 +418,7 @@ public class BookingFragment extends Fragment {
         view.findViewById(R.id.eventConfirmButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                thisBooking.setEventDuration(Integer.parseInt(durationText.getText().toString().subSequence(0, 1).toString()));
+                thisBooking.setEventDuration(Integer.parseInt(durationText.getText().toString().substring(0, 1)));
                 thisBooking.setEventTime(startTime.getText().toString());
                 //requireNonNull ==> Cannot be null. if null, throws NullPointerException.
                 thisBooking.setEventDate(Objects.requireNonNull(eventDate.getText()).toString());
@@ -484,15 +485,16 @@ public class BookingFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assert getFragmentManager() != null;
-                datePickerFragment.show(getFragmentManager(), "DatePicker");
+                if (getFragmentManager() != null)
+                    datePickerFragment.show(getFragmentManager(), "DatePicker");
 
             }
         });
     }
 
 
-    private void showTimePickDialog(final AppCompatTextView textViewStart, final AppCompatTextView textViewEnd) {
+    private void showTimePickDialog(final AppCompatTextView textViewStart,
+                                    final AppCompatTextView textViewEnd) {
         assert getFragmentManager() != null;
         //keypad won't show when click.
         textViewStart.setFocusableInTouchMode(false);

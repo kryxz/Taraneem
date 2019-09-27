@@ -133,12 +133,13 @@ class Common {
                 array, //integer id
                 android.R.layout.simple_spinner_item
         );
-        //data to add to the argument theBooking.
-        final String[] arrayData = view.getContext().getResources().getStringArray(array);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //add adapter to spinner.
         spinner.setAdapter(adapter);
+
+        //data to add to the argument theBooking.
+        final String[] arrayData = view.getContext().getResources().getStringArray(array);
 
         //set selected item... this is useful when opening a dialog.
         if (spinner.getId() == R.id.editPhotoSpinner || spinner.getId() == R.id.photoSpinner)
@@ -166,7 +167,7 @@ class Common {
                         break;
                 }
                 //update price whenever there is a change
-                updatePriceText(priceTextView, theBooking);
+                updatePriceText(priceTextView, theBooking.getPrice());
             }
 
             @Override
@@ -240,15 +241,15 @@ class Common {
                 dialog.dismiss(); //hide dialog
 
                 //update price!
-                updatePriceText(priceTextView, theBooking);
+                updatePriceText(priceTextView, theBooking.getPrice());
             }
         });
     }
 
 
-    static void updatePriceText(AppCompatTextView textView, Booking theBooking) {
+    static void updatePriceText(AppCompatTextView textView, int price) {
         //updates price
-        textView.setText(textView.getContext().getString(R.string.total_price, theBooking.getPrice()));
+        textView.setText(textView.getContext().getString(R.string.total_price, price));
     }
 
 
@@ -376,14 +377,14 @@ class Common {
         }
 
         @Override
-        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            if (!isTimeOK(i, eventDuration)) {
+        public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
+            if (!isTimeOK(hours, eventDuration)) {
                 Toast.makeText(getContext(), getString(R.string.invalid_time), Toast.LENGTH_SHORT).show();
                 return;
             }
-            starTimeText.setText(getString(R.string.timeFormat, i, i1));
+            starTimeText.setText(getString(R.string.timeFormat, hours, minutes));
 
-            endTimeText.setText(getString(R.string.timeFormat, timeAfter(i, eventDuration), i1));
+            endTimeText.setText(getString(R.string.timeFormat, timeAfter(hours, eventDuration), minutes));
         }
 
         @NonNull

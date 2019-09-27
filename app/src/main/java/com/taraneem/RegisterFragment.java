@@ -92,7 +92,6 @@ public class RegisterFragment extends Fragment {
                 final User user = userData();
                 if (user == null)
                     return;
-                registerBtn.setEnabled(false);
                 final ContentLoadingProgressBar progressBar = view.findViewById(R.id.regProgressBar);
                 AppCompatEditText passwordEd = view.findViewById(R.id.registerPasswordEd);
                 progressBar.setVisibility(View.VISIBLE);
@@ -117,7 +116,6 @@ public class RegisterFragment extends Fragment {
                             view.findViewById(R.id.registerView).setVisibility(View.VISIBLE);
                             Toast.makeText(view.getContext(), getString(R.string.invalidEmail), Toast.LENGTH_SHORT).show();
                             ((TextInputEditText) view.findViewById(R.id.registerEmailEd)).setError(getString(R.string.invalidEmail));
-                            registerBtn.setEnabled(true);
                         }
 
                     }
@@ -240,10 +238,10 @@ public class RegisterFragment extends Fragment {
         AppCompatEditText birthDateEd = view.findViewById(R.id.registerBirthDateEd);
         //keypad won't show.
 
-        showDatePickerDialog(birthDateEd, getFragmentManager());
+        Common.showDatePickerDialog(birthDateEd, getFragmentManager());
         //hides and shows password when user clicks the 'eye' icon.
-        passwordView((AppCompatEditText) view.findViewById(R.id.registerPasswordEd));
-        passwordView((AppCompatEditText) view.findViewById(R.id.registerPasswordConfirmEd));
+        Common.passwordView((AppCompatEditText) view.findViewById(R.id.registerPasswordEd));
+        Common.passwordView((AppCompatEditText) view.findViewById(R.id.registerPasswordConfirmEd));
     }
 
 
