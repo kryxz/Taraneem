@@ -215,6 +215,7 @@ public class UserBookingsFragment extends Fragment {
             hallNamesList.remove(position);
             idsList.remove(position);
             datesList.remove(position);
+            TempData.removeBookingItem(idsList.get(position));
             if (datesList.isEmpty()) {
                 Navigation.findNavController(view).navigateUp();
                 TempData.removeBookings();

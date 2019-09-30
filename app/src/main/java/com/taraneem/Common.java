@@ -46,10 +46,12 @@ import java.util.Objects;
 
 //contains all static methods used in other classes...
 class Common {
+
     static void viewInfoDialog(final String message, final String title, final View theView) {
         //creates a new dialog with specified message and title.
         AlertDialog.Builder builder = new AlertDialog.Builder(theView.getContext());
-
+        //this is a simple dialog without any buttons.
+        
         builder.setTitle(title).setMessage(message);
         AlertDialog dialog = builder.create();
         dialog.show();

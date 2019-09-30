@@ -59,9 +59,11 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <!-- revert back by changing
+     style line to style="?android:attr/progressBarStyle" -->
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loginProgressBar"
-        style="?android:attr/progressBarStyle"
+        style="@style/logoProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />

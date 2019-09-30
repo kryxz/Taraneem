@@ -192,6 +192,7 @@ public class InfoFragment extends Fragment {
 
         bookings.put(booking.getId(), removeWeekDays(booking.getEventDate()) + "'" + booking.getHallName());
         user.setBookings(bookings);
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(userID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

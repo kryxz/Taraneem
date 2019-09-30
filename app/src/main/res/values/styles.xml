@@ -9,6 +9,12 @@
         <item name="android:fontFamily">@font/titillium_regular</item>
     </style>
 
+    <style name="logoProgressBar" parent="@style/Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/logo</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:minWidth">200dp</item>
+    </style>
+
     <style name="MainTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

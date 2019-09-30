@@ -382,10 +382,10 @@ public class BookingFragment extends Fragment {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (view != null)
+                if (view != null)//assure that user is still in this fragment
                     textView.setTextColor(Color.WHITE);
             }
-        }, 1000);
+        }, 1000);//time in milliseconds
 
     }
 

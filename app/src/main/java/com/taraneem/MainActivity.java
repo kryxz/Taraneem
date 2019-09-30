@@ -3,9 +3,12 @@ package com.taraneem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,7 +30,6 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setLanguage();
 
         setContentView(R.layout.activity_main);
+        //splash logo
+        showSplash((ContentLoadingProgressBar) findViewById(R.id.splashProgressBar));
         FirebaseApp.initializeApp(this);
         navController = Navigation.findNavController(this, R.id.fragment_host);
         NavigationUI.setupActionBarWithNavController(this, navController);
@@ -51,6 +55,29 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(viewsSet).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         getUserData(this);
+    }
+
+    private void showSplash(final ContentLoadingProgressBar splashProgressBar) {
+        //hide app bar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        //show splash
+        splashProgressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //hide splash animation
+                splashProgressBar.animate().scaleX(0).scaleY(0).setDuration(500).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        //hide splash
+                        splashProgressBar.setVisibility(View.GONE);
+                        //show app bar
+                        Objects.requireNonNull(getSupportActionBar()).show();
+                    }
+                });
+
+            }
+        }, 1000);
     }
 
     private void setLanguage() {
@@ -73,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
                 String name = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
                 String phoneNo = Objects.requireNonNull(dataSnapshot.child("phoneNo").getValue()).toString();
+                String gender = Objects.requireNonNull(dataSnapshot.child("gender").getValue()).toString();
 
                 HashMap<String, String> bookings = new HashMap<>();
                 for (DataSnapshot ds : dataSnapshot.child("bookings").getChildren())
@@ -82,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 user.setEmail(email);
                 user.setName(name);
                 user.setPhoneNo(phoneNo);
+                user.setGender(gender.equals("male"));
                 user.setId(dataSnapshot.getKey());
                 user.setBookings(bookings);
 

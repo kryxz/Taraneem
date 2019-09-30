@@ -12,6 +12,7 @@ public class TempData extends Application {
     private static User userData; //Gets data in MainActivity from Fire base .Used to retrieve user data in profile fragment.
 
 
+    //user data is fetched from fireBase in MainActivity.
     public static User getUserData() {
         return userData;
     }
@@ -22,6 +23,12 @@ public class TempData extends Application {
 
     public static void removeBookings() {
         userData.setBookings(new HashMap<String, String>());
+    }
+    //delete  item from tempData
+    public static void removeBookingItem(String key) {
+        HashMap<String, String> map = userData.getBookings();
+        map.remove(key);
+        userData.setBookings(map);
     }
 
     public static Booking getCurrentBooking() {
