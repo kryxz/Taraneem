@@ -91,6 +91,7 @@ public class BookingFragment extends Fragment {
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //Booking logic. Delete from this line to line 131.
                     boolean isTaken = true;
                     if (!dataSnapshot.exists() || !dataSnapshot.hasChildren())
                         sendBookingData(databaseReference);
@@ -127,6 +128,7 @@ public class BookingFragment extends Fragment {
                         }
                     if (!isTaken)
                         sendBookingData(databaseReference);
+                    //Delete here.
                 }
 
                 @Override

@@ -51,7 +51,7 @@ class Common {
         //creates a new dialog with specified message and title.
         AlertDialog.Builder builder = new AlertDialog.Builder(theView.getContext());
         //this is a simple dialog without any buttons.
-        
+
         builder.setTitle(title).setMessage(message);
         AlertDialog dialog = builder.create();
         dialog.show();
