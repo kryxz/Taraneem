@@ -78,9 +78,19 @@ class Common {
         dialog.show();
 
         //declare a few check boxes and a button.
-        final AppCompatCheckBox surpriseCheck = layout.findViewById(R.id.surpriseCheck);
-        final AppCompatCheckBox particularEventCheck = layout.findViewById(R.id.particularEventCheck);
-        final AppCompatCheckBox customCheck = layout.findViewById(R.id.customCheck);
+        final AppCompatCheckBox jZaffeh = layout.findViewById(R.id.jZaffeh);
+        final AppCompatCheckBox sZaffeh = layout.findViewById(R.id.sZaffeh);
+        final AppCompatCheckBox pZaffeh = layout.findViewById(R.id.pZaffeh);
+
+        final AppCompatCheckBox balloons = layout.findViewById(R.id.balloons);
+        final AppCompatCheckBox luxuryCar = layout.findViewById(R.id.luxuryCar);
+        final AppCompatCheckBox dJ = layout.findViewById(R.id.dj);
+        final AppCompatCheckBox lights = layout.findViewById(R.id.lights);
+        final AppCompatCheckBox[] listOfCheckBoxes = {
+                jZaffeh, sZaffeh, pZaffeh, balloons, luxuryCar, dJ, lights
+        };
+        final String[] othersOptions = view.getContext().getResources().getStringArray(R.array.others);
+
         ///confirm button.
         final AppCompatButton confirmOthers = layout.findViewById(R.id.confirmOthers);
 
@@ -89,28 +99,24 @@ class Common {
         final StringBuilder others = new StringBuilder();
         final String userOthers = theBooking.getOthers();
 
-        //check if field already contains a specific string. Check box accordingly.
-        surpriseCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.surprise)));
-        particularEventCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.particular_event)));
-        customCheck.setChecked(userOthers.contains(view.getContext().getString(R.string.customize)));
+        //loop through fields. check if field already contains a specific string.
+        for (int i = 0; i < listOfCheckBoxes.length; i++)
+            listOfCheckBoxes[i].setChecked(userOthers.contains(othersOptions[i]));
+
+
+
 
         //confirm button listener
         confirmOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (surpriseCheck.isChecked())
-                    others.append(view.getContext().getString(R.string.surprise));
 
-                if (particularEventCheck.isChecked())
-                    if (others.length() == 0)
-                        others.append(view.getContext().getString(R.string.particular_event));
-                    else
-                        others.append(", ").append(view.getContext().getString(R.string.particular_event));
-                if (customCheck.isChecked())
-                    if (others.length() == 0)
-                        others.append(view.getContext().getString(R.string.customize));
-                    else
-                        others.append(", ").append(view.getContext().getString(R.string.customize));
+                for (int i = 0; i < listOfCheckBoxes.length; i++)
+                    if (listOfCheckBoxes[i].isChecked())
+                        if (others.length() == 0)
+                            others.append(othersOptions[i]);
+                        else
+                            others.append(", ").append(othersOptions[i]);
 
                 if (others.length() != 0)
                     textView.setText(others.toString());

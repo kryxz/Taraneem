@@ -175,10 +175,22 @@
     </string-array>
 
     <string-array name="others">
-        <item>مفاجأة</item>
-        <item>حدث معيّن</item>
-        <item>مخصص</item>
+        <item>زفّة أردنية</item>
+        <item>زفّة شاميّة</item>
+        <item>زفّة فلسطنية</item>
+        <item>بوالين</item>
+        <item>سيارة فاخرة</item>
+        <item>دي جي</item>
+        <item>الإنارة</item>
     </string-array>
+
+    <string name="jZaffeh">زفّة أردنية</string>
+    <string name="sZaffeh">زفّة شاميّة</string>
+    <string name="pZaffeh">زفّة فلسطنية</string>
+    <string name="balloons">بوالين</string>
+    <string name="luxuryCar">سيارة فاخرة</string>
+    <string name="dJ">دي جي</string>
+    <string name="lights">الإنارة</string>
 
     <string-array name="inviteesNumbers">
         <item>100</item>

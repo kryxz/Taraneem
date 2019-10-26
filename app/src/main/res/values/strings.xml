@@ -177,10 +177,23 @@
     </string-array>
 
     <string-array name="others">
-        <item>Surprise</item>
-        <item>Particular Event</item>
-        <item>Customize</item>
+        <item>Jordanian Wedding Zaffeh</item>
+        <item>Syrian Wedding Zaffeh</item>
+        <item>Palestinian Wedding Zaffeh</item>
+        <item>Balloons</item>
+        <item>Luxury Car</item>
+        <item>DJ</item>
+        <item>Lights</item>
+
     </string-array>
+    <string name="jZaffeh">Jordanian Wedding Zaffeh</string>
+    <string name="sZaffeh">Syrian Wedding Zaffeh</string>
+    <string name="pZaffeh">Palestinian Wedding Zaffeh</string>
+    <string name="balloons">Balloons</string>
+    <string name="luxuryCar">Luxury Car</string>
+    <string name="dJ">DJ</string>
+    <string name="lights">Lights</string>
+
 
     <string-array name="inviteesNumbers">
         <item>100</item>

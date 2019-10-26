@@ -54,19 +54,31 @@ public class Booking {
 
     //price is affected by various factors.
     private void setPrice() {
+
+        String[] othersOptions = res.getStringArray(R.array.others);
+        String[] hospitalityOptions =
+                {
+                        res.getString(R.string.cake),
+                        res.getString(R.string.pepsi),
+                        res.getString(R.string.knafeh)
+                };
+
         int inviteesCost = inviteesCount / 100;
         int photographyCost = Arrays.asList(
                 res.getStringArray(R.array.photographyOptions)).indexOf(photoOptions) + 1;
-        int hospitalityCost = 0;
-        if (hospitality.contains(res.getString(R.string.cake)))
-            hospitalityCost += 1;
-        if (hospitality.contains(res.getString(R.string.pepsi)))
-            hospitalityCost += 1;
-        if (hospitality.contains(res.getString(R.string.knafeh)))
-            hospitalityCost += 1;
 
-        price = 400 + inviteesCost * 50 +
-                hallCost * 50 + photographyCost * 50 + hospitalityCost * 50;
+        int hospitalityCost = 0;
+        for (String option : hospitalityOptions)
+            if (hospitality.contains(option))
+                hospitalityCost += 1;
+        int othersCost = 0;
+        if (others != null)
+            for (String other : othersOptions)
+                if (others.contains(other))
+                    othersCost += 1;
+
+        price = 300 + inviteesCost * 50 +
+                hallCost * 50 + photographyCost * 50 + hospitalityCost * 50 + othersCost * 50;
 
         //floor to 1000, or ceil to 600.
         if (price < 600)

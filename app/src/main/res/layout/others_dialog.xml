@@ -18,21 +18,39 @@
 
 
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/particularEventCheck"
+        android:id="@+id/jZaffeh"
         style="@style/checkBoxStyle"
-        android:text="@string/particular_event" />
+        android:text="@string/jZaffeh" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/customCheck"
+        android:id="@+id/sZaffeh"
         style="@style/checkBoxStyle"
-        android:text="@string/customize" />
+        android:text="@string/sZaffeh" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/surpriseCheck"
+        android:id="@+id/pZaffeh"
         style="@style/checkBoxStyle"
-        android:text="@string/surprise" />
+        android:text="@string/pZaffeh" />
 
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/balloons"
+        style="@style/checkBoxStyle"
+        android:text="@string/balloons" />
 
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/luxuryCar"
+        style="@style/checkBoxStyle"
+        android:text="@string/luxuryCar" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/dj"
+        style="@style/checkBoxStyle"
+        android:text="@string/dJ" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/lights"
+        style="@style/checkBoxStyle"
+        android:text="@string/lights" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confirmOthers"
