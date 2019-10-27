@@ -246,7 +246,7 @@ public class InfoFragment extends Fragment {
         editOthersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Common.showOthersDialog(booking, editOthersText, fragment, view);
+                Common.showOthersDialog(booking, editOthersText, fragment, view, (AppCompatTextView) view.findViewById(R.id.priceText));
             }
         });
         layout.findViewById(R.id.confirmBookingEdit).setOnClickListener(new View.OnClickListener() {

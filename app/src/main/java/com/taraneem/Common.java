@@ -65,7 +65,7 @@ class Common {
     //Others dialog, contains 3 check boxes and a button.
     static void showOthersDialog(final Booking theBooking,
                                  final AppCompatTextView textView,
-                                 Fragment fragment, View view) {
+                                 Fragment fragment, View view, final AppCompatTextView priceTextView) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         @SuppressLint("InflateParams")//hides ide warning
@@ -126,6 +126,8 @@ class Common {
                 //add selected to booking data
                 theBooking.setOthers(others.toString());
                 dialog.dismiss(); //hide dialog
+                //update price!
+                updatePriceText(priceTextView, theBooking.getPrice());
             }
         });
     }

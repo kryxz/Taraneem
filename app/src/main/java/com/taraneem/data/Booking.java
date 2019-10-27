@@ -77,7 +77,7 @@ public class Booking {
                 if (others.contains(other))
                     othersCost += 1;
 
-        price = 300 + inviteesCost * 50 +
+        price = 400 + inviteesCost * 50 +
                 hallCost * 50 + photographyCost * 50 + hospitalityCost * 50 + othersCost * 50;
 
         //floor to 1000, or ceil to 600.

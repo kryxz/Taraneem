@@ -365,7 +365,7 @@ public class BookingFragment extends Fragment {
         othersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOthersDialog(thisBooking, othersText, fragment, view);
+                showOthersDialog(thisBooking, othersText, fragment, view, (AppCompatTextView) view.findViewById(R.id.priceText));
             }
         });
         //show a dialog when startTime/endTime views are clicked.
