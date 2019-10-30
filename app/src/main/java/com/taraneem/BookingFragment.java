@@ -1,6 +1,7 @@
 package com.taraneem;
 
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -248,7 +249,8 @@ public class BookingFragment extends Fragment {
                                 halls.get(hallSpinner.getSelectedItemPosition()).get("WebSite"));
                         //Hall name as a title of the dialog.
                         String title = halls.get(hallSpinner.getSelectedItemPosition()).get("name");
-                        Common.viewInfoDialogHalls(infoMessage, title, view);
+                        String url=halls.get(hallSpinner.getSelectedItemPosition()).get("WebSite");
+                        Common.viewInfoDialogHalls(infoMessage, title, view,url, getActivity());
                     }
                 });
                 //halls spinner listener.

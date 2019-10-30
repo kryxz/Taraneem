@@ -48,7 +48,8 @@ import java.util.Objects;
 //contains all static methods used in other classes...
 class Common {
 
-    static void viewInfoDialogHalls(final String message, final String title, final View theView) {
+    static void viewInfoDialogHalls(final String message, final String title,
+                                    final View theView,final String url,final Activity activity) {
         //creates a new dialog with specified message and title.
         AlertDialog.Builder builder = new AlertDialog.Builder(theView.getContext());
         //this is a simple dialog without any buttons.
@@ -60,6 +61,15 @@ class Common {
         //Changes font for message to match the app font.
         ((AppCompatTextView) dialog.findViewById(android.R.id.message))
                 .setTypeface(ResourcesCompat.getFont(theView.getContext(), R.font.titillium_regular));
+        dialog.findViewById(android.R.id.message).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                activity.startActivity(i);
+            }
+        });
     }
 
     static void viewInfoDialog(final String message, final String title, final View theView) {
