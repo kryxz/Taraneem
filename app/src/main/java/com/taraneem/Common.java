@@ -10,6 +10,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -46,6 +47,20 @@ import java.util.Objects;
 
 //contains all static methods used in other classes...
 class Common {
+
+    static void viewInfoDialogHalls(final String message, final String title, final View theView) {
+        //creates a new dialog with specified message and title.
+        AlertDialog.Builder builder = new AlertDialog.Builder(theView.getContext());
+        //this is a simple dialog without any buttons.
+
+        builder.setTitle(title).setMessage(message);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //Changes font for message to match the app font.
+        ((AppCompatTextView) dialog.findViewById(android.R.id.message))
+                .setTypeface(ResourcesCompat.getFont(theView.getContext(), R.font.titillium_regular));
+    }
 
     static void viewInfoDialog(final String message, final String title, final View theView) {
         //creates a new dialog with specified message and title.

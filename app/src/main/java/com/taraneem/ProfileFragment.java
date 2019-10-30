@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
                                 return;
                             }
 
-                            if (phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()) {
+                            if (phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()||phone.length() != 10) {
                                 phoneEd.setError("Invalid Phone Number");
                                 return;
                             }

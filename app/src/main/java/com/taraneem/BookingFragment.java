@@ -244,11 +244,11 @@ public class BookingFragment extends Fragment {
                         String infoMessage = getString(R.string.infoMessage,
                                 halls.get(hallSpinner.getSelectedItemPosition()).get("address"),
                                 halls.get(hallSpinner.getSelectedItemPosition()).get("phone"),
-                                halls.get(hallSpinner.getSelectedItemPosition()).get("info"));
-
+                                halls.get(hallSpinner.getSelectedItemPosition()).get("info"),
+                                halls.get(hallSpinner.getSelectedItemPosition()).get("WebSite"));
                         //Hall name as a title of the dialog.
                         String title = halls.get(hallSpinner.getSelectedItemPosition()).get("name");
-                        Common.viewInfoDialog(infoMessage, title, view);
+                        Common.viewInfoDialogHalls(infoMessage, title, view);
                     }
                 });
                 //halls spinner listener.

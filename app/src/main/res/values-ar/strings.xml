@@ -102,6 +102,9 @@
         \n\n
         معلومات:
         \n %3$s
+        \n\n
+        موقع:
+        \n %4$s
     </string>
     <string name="bookingInfoFull">
         المناسبة:

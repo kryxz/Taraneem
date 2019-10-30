@@ -107,6 +107,9 @@
         \n\n
         Info:
         \n %3$s
+        \n\n
+        WebSite:
+        \n %4$s
     </string>
     <string name="mainInfoMessage">
         Use this page to choose what type of event you want to book for!
